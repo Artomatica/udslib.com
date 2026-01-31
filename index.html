@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>LibUDS - The Portable ISO 14229 Stack</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" />
+	</noscript>
+</head>
+
+<body class="landing is-preload">
+
+	<!-- Page Wrapper -->
+	<div id="page-wrapper">
+
+		<!-- Header -->
+		<header id="header" class="alt">
+			<h1><a href="index.html">LibUDS</a></h1>
+			<nav id="nav">
+				<ul>
+					<li class="special">
+						<a href="#menu" class="menuToggle"><span>Menu</span></a>
+						<div id="menu">
+							<ul>
+								<li><a href="index.html">Home</a></li>
+								<!-- <li><a href="generic.html">Documentation</a></li> -->
+								<!-- <li><a href="elements.html">Elements</a></li> -->
+								<li><a href="https://github.com/udslib/udslib">GitHub</a></li>
+								<li><a href="#cta">Contact</a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<!-- Banner -->
+		<section id="banner">
+			<div class="inner">
+				<h2>LibUDS</h2>
+				<p>The Portable ISO 14229 Stack<br />
+					Universal. Portable. Reliability First.<br />
+					A lightweight UDS stack for embedded systems.</p>
+				<ul class="actions special">
+					<li><a href="https://github.com/udslib/udslib" class="button primary">View Technical Preview</a>
+					</li>
+				</ul>
+			</div>
+			<a href="#one" class="more scrolly">Learn More</a>
+		</section>
+
+		<!-- One -->
+		<section id="one" class="wrapper style1 special">
+			<div class="inner">
+				<header class="major">
+					<h2>Vendor Neutral<br />
+						Standardized Diagnostics</h2>
+					<p>A portable C implementation of ISO 14229-1:2013.<br />
+						Designed for cross-platform compatibility, from 8-bit MCUs to Linux gateways.</p>
+				</header>
+				<ul class="icons major">
+					<li><span class="icon fa-microchip major style1"><span class="label">Embedded</span></span></li>
+					<li><span class="icon fa-check-circle major style2"><span class="label">Reliable</span></span></li>
+					<li><span class="icon solid fa-code major style3"><span class="label">Open Source</span></span></li>
+				</ul>
+			</div>
+		</section>
+
+		<!-- Two -->
+		<!-- Two -->
+		<section id="two" class="wrapper alt style2">
+			<div class="inner">
+				<div class="row">
+					<div class="col-4 col-12-medium">
+						<h3>Deterministic Memory</h3>
+						<p>Engineered for safety-critical environments. <strong>Zero Malloc</strong> design ensures no
+							heap
+							fragmentation. 100% Branch Coverage via unit tests.</p>
+					</div>
+					<div class="col-4 col-12-medium">
+						<h3>Hardware Abstraction</h3>
+						<p>Clean separation of concerns. The protocol logic is fully decoupled from the physical
+							transport
+							layer (CAN, ETH, UART), enabling rapid porting.</p>
+					</div>
+					<div class="col-4 col-12-medium">
+						<h3>Dual Licensing</h3>
+						<p>Available under GPLv3 for open-source evaluation. Commercial licenses provide exceptional
+							support and ISO 26262 compliance artifacts.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Three -->
+		<section id="three" class="wrapper style3 special">
+			<div class="inner">
+				<header class="major">
+					<h2>Supported ISO 14229 Services</h2>
+				</header>
+				<div class="table-wrapper">
+					<table class="alt">
+						<tbody>
+							<tr>
+								<td>0x10</td>
+								<td>Diagnostic Session Control</td>
+								<td>0x34</td>
+								<td>Request Download</td>
+							</tr>
+							<tr>
+								<td>0x11</td>
+								<td>ECU Reset</td>
+								<td>0x36</td>
+								<td>Transfer Data</td>
+							</tr>
+							<tr>
+								<td>0x14</td>
+								<td>Clear Diagnostic Information</td>
+								<td>0x37</td>
+								<td>Request Transfer Exit</td>
+							</tr>
+							<tr>
+								<td>0x19</td>
+								<td>Read DTC Information</td>
+								<td>0x3E</td>
+								<td>Tester Present</td>
+							</tr>
+							<tr>
+								<td>0x22</td>
+								<td>Read Data By Identifier</td>
+								<td>0x85</td>
+								<td>Control DTC Setting</td>
+							</tr>
+							<tr>
+								<td>0x27</td>
+								<td>Security Access</td>
+								<td>0x28</td>
+								<td>Communication Control</td>
+							</tr>
+							<tr>
+								<td>0x2E</td>
+								<td>Write Data By Identifier</td>
+								<td>0x31</td>
+								<td>Routine Control</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</section>
+
+		<!-- CTA -->
+		<section id="cta" class="wrapper style4">
+			<div class="inner">
+				<header>
+					<h2>Standardize your diagnostics</h2>
+					<p>Evaluate the technical preview on GitHub.</p>
+				</header>
+				<ul class="actions stacked">
+					<li><a href="https://github.com/udslib/udslib" class="button fit primary">Get Started (GPLv3)</a>
+					</li>
+					<li><a href="mailto:sales@udslib.com" class="button fit">Contact Sales</a></li>
+				</ul>
+			</div>
+		</section>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<ul class="icons">
+				<li><a href="https://twitter.com/udslib" class="icon brands fa-twitter"><span
+							class="label">Twitter</span></a></li>
+				<li><a href="https://github.com/udslib/udslib" class="icon brands fa-github"><span
+							class="label">GitHub</span></a></li>
+				<li><a href="mailto:contact@udslib.com" class="icon solid fa-envelope"><span
+							class="label">Email</span></a></li>
+			</ul>
+			<ul class="copyright">
+				<li>&copy; LibUDS</li>
+				<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+			</ul>
+		</footer>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
