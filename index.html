@@ -7,10 +7,18 @@
 <html>
 
 <head>
-		<title>UDSLib - The Portable ISO 14229 Stack</title>
+	<title>UDSLib - The Portable ISO 14229 Stack</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-JXF0DBSEDH"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	  gtag('config', 'G-JXF0DBSEDH');
+	</script>
 	<noscript>
 		<link rel="stylesheet" href="assets/css/noscript.css" />
 	</noscript>
@@ -36,6 +44,7 @@
 								<li><a href="https://github.com/udslib/udslib">GitHub</a></li>
 								<li><a href="#features">Features</a></li>
 								<li><a href="#licensing">Licensing</a></li>
+								<li><a href="whitepaper.html">White&nbsp;Paper</a></li>
 								<li><a href="#cta">Contact</a></li>
 							</ul>
 						</div>
@@ -52,8 +61,7 @@
 					Universal. Portable. Safety‑first.<br />
 					A lightweight UDS stack for embedded systems.</p>
 				<ul class="actions special">
-					<li><a href="https://github.com/udslib/udslib" class="button primary">View Technical Preview</a>
-					</li>
+					<li><a href="#licensing" class="button primary">Buy Commercial License</a></li>
 				</ul>
 			</div>
 			<a href="#one" class="more scrolly">Learn More</a>
@@ -63,14 +71,13 @@
 		<section id="one" class="wrapper style1 special">
 			<div class="inner">
 				<header class="major">
-					<h2>Vendor Neutral<br />
-						Standardized Diagnostics</h2>
-					<p>A portable C implementation of ISO 14229-1:2013.<br />
-						Designed for cross-platform compatibility, from 8-bit MCUs to Linux gateways.</p>
+					<h2>Production‑Ready UDS for Your Product</h2>
+					<p>MISRA‑aligned ISO 14229-1 stack with deterministic memory and built-in tooling.<br />
+						Ship faster on Zephyr, bare metal, or Linux with integration and support included.</p>
 				</header>
 				<div class="features-grid">
 					<div class="feature">
-						<span class="icon fa-microchip style1"></span>
+						<span class="icon solid fa-server style1"></span>
 						<h3>MCUs to Linux</h3>
 						<p>Zero-libc core scales from 8‑bit controllers to gateways.</p>
 					</div>
@@ -124,16 +131,18 @@
 				<div class="row aln-center">
 					<div class="col-6 col-12-medium">
 						<h3>Community (Free)</h3>
-						<p>PolyForm Noncommercial 1.0.0. Use it for personal, research, or education — no production or for-profit deployment.</p>
+						<p>PolyForm Noncommercial 1.0.0. Use it for personal, research, or education — no production or
+							for-profit deployment.</p>
 					</div>
 					<div class="col-6 col-12-medium">
 						<h3>Commercial (5,000 EUR)</h3>
-						<p>Perpetual license for production + integration package (up to 40h) and 1 year of support/updates. Email <a href="mailto:andrii@shylenko.com">andrii@shylenko.com</a> to purchase.</p>
+						<p>Perpetual license for production + integration package (up to 40h) and 1 year of
+							support/updates. Email <a href="mailto:andrii@shylenko.com">andrii@shylenko.com</a> to
+							purchase.</p>
 					</div>
 				</div>
 				<ul class="actions special">
-					<li><a href="COMMERCIAL_LICENSE.md" class="button primary">View Commercial Terms</a></li>
-					<li><a href="LICENSE" class="button">Community License</a></li>
+					<li><a href="#cta" class="button primary">Talk to Us</a></li>
 				</ul>
 			</div>
 		</section>
@@ -147,11 +156,26 @@
 				<div class="table-wrapper">
 					<table class="alt">
 						<tbody>
-							<tr><td><strong>Protocol</strong></td><td>ISO 14229-1 core services (0x10/11/14/19/22/27/28/2E/31/34/36/37/3E/85)</td></tr>
-							<tr><td><strong>Safety & Quality</strong></td><td>MISRA-aligned, deterministic memory, NRC priority enforcement</td></tr>
-							<tr><td><strong>Transports</strong></td><td>Zephyr ISO-TP sockets or built-in ISO-TP fallback (zero malloc)</td></tr>
-							<tr><td><strong>Platforms</strong></td><td>8‑bit MCUs to Linux gateways; Zephyr + POSIX host sim validated</td></tr>
-							<tr><td><strong>Tooling</strong></td><td>Host simulator, Wireshark dissector, Python validation harness</td></tr>
+							<tr>
+								<td><strong>Protocol</strong></td>
+								<td>ISO 14229-1 core services (0x10/11/14/19/22/27/28/2E/31/34/36/37/3E/85)</td>
+							</tr>
+							<tr>
+								<td><strong>Safety & Quality</strong></td>
+								<td>MISRA-aligned, deterministic memory, NRC priority enforcement</td>
+							</tr>
+							<tr>
+								<td><strong>Transports</strong></td>
+								<td>Zephyr ISO-TP sockets or built-in ISO-TP fallback (zero malloc)</td>
+							</tr>
+							<tr>
+								<td><strong>Platforms</strong></td>
+								<td>8‑bit MCUs to Linux gateways; Zephyr + POSIX host sim validated</td>
+							</tr>
+							<tr>
+								<td><strong>Tooling</strong></td>
+								<td>Host simulator, Wireshark dissector, Python validation harness</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -223,9 +247,9 @@
 					<p>Evaluate the technical preview on GitHub.</p>
 				</header>
 				<ul class="actions stacked">
-					<li><a href="https://github.com/udslib/udslib" class="button fit primary">Get Started (GPLv3)</a>
+					<li><a href="https://github.com/udslib/udslib" class="button fit primary">View on GitHub</a>
 					</li>
-					<li><a href="mailto:sales@udslib.com" class="button fit">Contact Sales</a></li>
+					<li><a href="mailto:andrii@shylenko.com" class="button fit">Contact Sales</a></li>
 				</ul>
 			</div>
 		</section>
@@ -233,11 +257,10 @@
 		<!-- Footer -->
 		<footer id="footer">
 			<ul class="icons">
-				<li><a href="https://twitter.com/udslib" class="icon brands fa-twitter"><span
-							class="label">Twitter</span></a></li>
+
 				<li><a href="https://github.com/udslib/udslib" class="icon brands fa-github"><span
 							class="label">GitHub</span></a></li>
-				<li><a href="mailto:contact@udslib.com" class="icon solid fa-envelope"><span
+				<li><a href="mailto:andrii@shylenko.com" class="icon solid fa-envelope"><span
 							class="label">Email</span></a></li>
 			</ul>
 			<ul class="copyright">

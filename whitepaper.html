@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<!--
+  UDSLib White Paper page
+-->
+<html>
+
+<head>
+    <title>UDSLib White Paper</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JXF0DBSEDH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-JXF0DBSEDH');
+    </script>
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" />
+    </noscript>
+</head>
+
+<body class="is-preload">
+
+    <div id="page-wrapper">
+
+        <!-- Header -->
+        <header id="header">
+            <h1><a href="index.html">UDSLib</a></h1>
+            <nav id="nav">
+                <ul>
+                    <li class="special">
+                        <a href="#menu" class="menuToggle"><span>Menu</span></a>
+                        <div id="menu">
+                            <ul>
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="index.html#features">Features</a></li>
+                                <li><a href="index.html#licensing">Licensing</a></li>
+                                <li><a href="whitepaper.html">White Paper</a></li>
+                                <li><a href="index.html#cta">Contact</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Main -->
+        <article id="main">
+            <header>
+                <h2>White Paper: UDSLib Architecture</h2>
+                <p>Safety-first UDS stack for embedded and automotive systems.</p>
+            </header>
+
+            <section class="wrapper style5">
+                <div class="inner">
+                    <h3>Overview</h3>
+                    <p>UDSLib is a portable ISO 14229-1 protocol stack designed for safety-critical environments where
+                        deterministic behavior and auditability matter.</p>
+
+                    <h3>1. Safety by Design</h3>
+                    <ul>
+                        <li><strong>Static memory model</strong>: zero runtime allocation.</li>
+                        <li><strong>Caller-owned buffers</strong>: the application controls memory.</li>
+                        <li><strong>Overflow protection</strong>: guards multi-packet reads (SID 0x22).</li>
+                    </ul>
+
+                    <h3>2. Deterministic Timing</h3>
+                    <ul>
+                        <li><strong>Tickless timers</strong>: P2/P2* use monotonic time to avoid drift.</li>
+                        <li><strong>Non-blocking</strong>: state machine won’t stall your main loop.</li>
+                        <li><strong>Async dispatch</strong>: NRC 0x78 handled automatically for long ops.</li>
+                    </ul>
+
+                    <h3>3. Safety Gates</h3>
+                    <ul>
+                        <li><strong>Application approval</strong> required for destructive services (Flash, Reset,
+                            Write).</li>
+                        <li><strong>Vehicle-state awareness</strong> delegated to your app (you keep control).</li>
+                    </ul>
+
+                    <h3>4. Developer Ecosystem</h3>
+                    <ul>
+                        <li><strong>Wireshark dissector</strong> for readable UDS traces.</li>
+                        <li><strong>Python bindings</strong> (`pyudslib`) for host-side tests.</li>
+                        <li><strong>Zephyr guides</strong> for RTOS integration.</li>
+                    </ul>
+
+                    <h3>5. Verification</h3>
+                    <ul>
+                        <li><strong>Host-based tests</strong> included.</li>
+                        <li><strong>Fuzzing</strong> against malformed packets.</li>
+                        <li><strong>MISRA-aligned</strong> codebase.</li>
+                    </ul>
+
+                    <hr />
+                    <p>Want to discuss deployment? Email <a href="mailto:andrii@shylenko.com">andrii@shylenko.com</a>.
+                    </p>
+                </div>
+            </section>
+        </article>
+
+        <!-- CTA footer reuse from index -->
+        <section id="cta" class="wrapper style4">
+            <div class="inner">
+                <header>
+                    <h2>Ready for production?</h2>
+                    <p>Get a commercial license with integration support.</p>
+                </header>
+                <ul class="actions stacked">
+                    <li><a href="index.html#licensing" class="button fit primary">See Licensing</a></li>
+                    <li><a href="mailto:andrii@shylenko.com" class="button fit">Email andrii@shylenko.com</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <ul class="copyright">
+                <li>&copy; UDSLib</li>
+                <li>Design: HTML5 UP</li>
+            </ul>
+        </footer>
+
+    </div>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
