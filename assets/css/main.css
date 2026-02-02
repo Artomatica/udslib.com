@@ -3997,3 +3997,27 @@ input, select, textarea {
 	body.is-mobile.landing #footer {
 		background-color: #1d242a;
 	}
+/* Feature grid to replace decorative diamonds */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2.5rem 2rem;
+  margin-top: 2rem;
+}
+.features-grid .feature {
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.features-grid .icon {
+  font-size: 2.1rem;
+  margin-bottom: 0.5rem;
+}
+.features-grid h3 {
+  margin: 0 0 0.25rem 0;
+  letter-spacing: 0.03em;
+}
+.features-grid p {
+  margin: 0;
+}

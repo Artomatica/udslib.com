@@ -7,7 +7,7 @@
 <html>
 
 <head>
-	<title>LibUDS - The Portable ISO 14229 Stack</title>
+		<title>UDSLib - The Portable ISO 14229 Stack</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
@@ -23,7 +23,7 @@
 
 		<!-- Header -->
 		<header id="header" class="alt">
-			<h1><a href="index.html">LibUDS</a></h1>
+			<h1><a href="index.html">UDSLib</a></h1>
 			<nav id="nav">
 				<ul>
 					<li class="special">
@@ -34,6 +34,8 @@
 								<!-- <li><a href="generic.html">Documentation</a></li> -->
 								<!-- <li><a href="elements.html">Elements</a></li> -->
 								<li><a href="https://github.com/udslib/udslib">GitHub</a></li>
+								<li><a href="#features">Features</a></li>
+								<li><a href="#licensing">Licensing</a></li>
 								<li><a href="#cta">Contact</a></li>
 							</ul>
 						</div>
@@ -45,9 +47,9 @@
 		<!-- Banner -->
 		<section id="banner">
 			<div class="inner">
-				<h2>LibUDS</h2>
+				<h2>UDSLib</h2>
 				<p>The Portable ISO 14229 Stack<br />
-					Universal. Portable. Reliability First.<br />
+					Universal. Portable. Safety‑first.<br />
 					A lightweight UDS stack for embedded systems.</p>
 				<ul class="actions special">
 					<li><a href="https://github.com/udslib/udslib" class="button primary">View Technical Preview</a>
@@ -66,11 +68,23 @@
 					<p>A portable C implementation of ISO 14229-1:2013.<br />
 						Designed for cross-platform compatibility, from 8-bit MCUs to Linux gateways.</p>
 				</header>
-				<ul class="icons major">
-					<li><span class="icon fa-microchip major style1"><span class="label">Embedded</span></span></li>
-					<li><span class="icon fa-check-circle major style2"><span class="label">Reliable</span></span></li>
-					<li><span class="icon solid fa-code major style3"><span class="label">Open Source</span></span></li>
-				</ul>
+				<div class="features-grid">
+					<div class="feature">
+						<span class="icon fa-microchip style1"></span>
+						<h3>MCUs to Linux</h3>
+						<p>Zero-libc core scales from 8‑bit controllers to gateways.</p>
+					</div>
+					<div class="feature">
+						<span class="icon fa-check-circle style2"></span>
+						<h3>Safety First</h3>
+						<p>MISRA‑aligned code, deterministic memory, hardened NRC logic.</p>
+					</div>
+					<div class="feature">
+						<span class="icon solid fa-code style3"></span>
+						<h3>Source Available</h3>
+						<p>Noncommercial use free; simple commercial license for production.</p>
+					</div>
+				</div>
 			</div>
 		</section>
 
@@ -92,10 +106,54 @@
 							layer (CAN, ETH, UART), enabling rapid porting.</p>
 					</div>
 					<div class="col-4 col-12-medium">
-						<h3>Dual Licensing</h3>
-						<p>Available under GPLv3 for open-source evaluation. Commercial licenses provide exceptional
-							support and ISO 26262 compliance artifacts.</p>
+						<h3>Clear Licensing</h3>
+						<p>PolyForm Noncommercial 1.0.0 for community use. Commercial license (5,000&nbsp;EUR)
+							includes integration help and one year of support.</p>
 					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Licensing -->
+		<section id="licensing" class="wrapper style1 special">
+			<div class="inner">
+				<header class="major">
+					<h2>Licensing</h2>
+					<p>Fair for hobbyists. Simple for companies.</p>
+				</header>
+				<div class="row aln-center">
+					<div class="col-6 col-12-medium">
+						<h3>Community (Free)</h3>
+						<p>PolyForm Noncommercial 1.0.0. Use it for personal, research, or education — no production or for-profit deployment.</p>
+					</div>
+					<div class="col-6 col-12-medium">
+						<h3>Commercial (5,000 EUR)</h3>
+						<p>Perpetual license for production + integration package (up to 40h) and 1 year of support/updates. Email <a href="mailto:andrii@shylenko.com">andrii@shylenko.com</a> to purchase.</p>
+					</div>
+				</div>
+				<ul class="actions special">
+					<li><a href="COMMERCIAL_LICENSE.md" class="button primary">View Commercial Terms</a></li>
+					<li><a href="LICENSE" class="button">Community License</a></li>
+				</ul>
+			</div>
+		</section>
+
+		<!-- Features -->
+		<section id="features" class="wrapper alt style2">
+			<div class="inner">
+				<header class="major">
+					<h2>Features</h2>
+				</header>
+				<div class="table-wrapper">
+					<table class="alt">
+						<tbody>
+							<tr><td><strong>Protocol</strong></td><td>ISO 14229-1 core services (0x10/11/14/19/22/27/28/2E/31/34/36/37/3E/85)</td></tr>
+							<tr><td><strong>Safety & Quality</strong></td><td>MISRA-aligned, deterministic memory, NRC priority enforcement</td></tr>
+							<tr><td><strong>Transports</strong></td><td>Zephyr ISO-TP sockets or built-in ISO-TP fallback (zero malloc)</td></tr>
+							<tr><td><strong>Platforms</strong></td><td>8‑bit MCUs to Linux gateways; Zephyr + POSIX host sim validated</td></tr>
+							<tr><td><strong>Tooling</strong></td><td>Host simulator, Wireshark dissector, Python validation harness</td></tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</section>
@@ -183,7 +241,7 @@
 							class="label">Email</span></a></li>
 			</ul>
 			<ul class="copyright">
-				<li>&copy; LibUDS</li>
+				<li>&copy; UDSLib</li>
 				<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
 			</ul>
 		</footer>
