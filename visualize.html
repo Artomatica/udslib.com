@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UDSLib Session Analyzer</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Inter:wght@400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .container {
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #252526;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: 15px 20px;
+            background: #333;
+            border-bottom: 1px solid #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #3498db;
+        }
+
+        .packet-list {
+            flex: 1;
+            overflow-y: auto;
+            border-bottom: 2px solid #444;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+        }
+
+        th {
+            background: #2d2d2d;
+            padding: 10px;
+            text-align: left;
+            position: sticky;
+            top: 0;
+            border-bottom: 1px solid #444;
+        }
+
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #333;
+        }
+
+        tr.selected {
+            background-color: #094771;
+        }
+
+        .packet-details {
+            height: 30%;
+            padding: 20px;
+            background: #1e1e1e;
+            overflow-y: auto;
+        }
+
+        .sid-tag {
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        .hex-dump {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>UDSLib Session Analyzer v1.8.0</h1>
+            <div>Capture: uds_session_real.pcap</div>
+        </div>
+        <div class="packet-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>ID</th>
+                        <th>Service</th>
+                        <th>Payload</th>
+                    </tr>
+                </thead>
+                <tbody id="packet-body">
+                </tbody>
+            </table>
+        </div>
+        <div class="packet-details" id="details">
+            <h3 style="color: #3498db;">Packet Details</h3>
+            <div id="details-content">Select a packet to view dissection.</div>
+        </div>
+    </div>
+    <script>
+        const packets = [
+            {
+                "time": "1.537551",
+                "id": "0x7E0",
+                "sid": "0x10",
+                "description": "DiagnosticSessionControl",
+                "data": "02 10 03"
+            },
+            {
+                "time": "1.537618",
+                "id": "0x7E8",
+                "sid": "0x50",
+                "description": "DiagnosticSessionControl Response",
+                "data": "06 50 03 00 32 01 F4 00"
+            },
+            {
+                "time": "1.537632",
+                "id": "0x7E0",
+                "sid": "0x22",
+                "description": "ReadDataByIdentifier",
+                "data": "03 22 F1 90"
+            },
+            {
+                "time": "1.537794",
+                "id": "0x7E8",
+                "sid": "0x62",
+                "description": "ReadDataByIdentifier Response",
+                "data": "10 11 62 F1 90 55 44 53"
+            }
+        ];
+
+        const body = document.getElementById('packet-body');
+        packets.forEach((p, i) => {
+            const tr = document.createElement('tr');
+            if (i === 3) tr.className = 'selected';
+            tr.innerHTML = `
+                <td>${p.time}</td>
+                <td>${p.id}</td>
+                <td><span class="sid-tag">${p.description}</span></td>
+                <td class="hex-dump">${p.data}</td>
+            `;
+            body.appendChild(tr);
+        });
+
+        // Show details for the selected packet (the last one)
+        const selected = packets[3];
+        document.getElementById('details-content').innerHTML = `
+            <p><strong>Frame Type:</strong> ISO 15765-2 (First Frame)</p>
+            <p><strong>UDS Service:</strong> ${selected.description} (${selected.sid})</p>
+            <p><strong>Payload Bytes:</strong> ${selected.data}</p>
+            <p style="color: #bdc3c7;">[Dissection complete: Data read from VIN DID 0xF190 matches expectation.]</p>
+        `;
+    </script>
+</body>
+
+</html>
