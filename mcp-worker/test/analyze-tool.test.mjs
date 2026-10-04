@@ -46,12 +46,36 @@ test("analyze_trace: files over 10 MB are rejected", async () => {
   }
 });
 
-test("analyze_trace: BLF is named and the export hint given", async () => {
-  const restore = withFetch(new Uint8Array([0x4c, 0x4f, 0x47, 0x47, 0x90, 0, 0, 0]));
+test("analyze_trace: uploaded BLF (python-can) is decoded", async () => {
+  const restore = withFetch(fx("flash-fail.blf"));
   try {
     const r = await call({ file: { download_url: "https://files.example/t.blf", file_id: "f" } });
+    assert.notEqual(r.isError, true, r.content[0].text);
+    assert.equal(r.structuredContent.summary.format, "blf");
+    assert.equal(r.structuredContent.rootCause.code, "wrongBlockSequenceCounter");
+  } finally {
+    restore();
+  }
+});
+
+test("analyze_trace: MDF 3 and pcap without CAN are input errors", async () => {
+  const mdf3 = new TextEncoder().encode("MDF     3.30    ");
+  let restore = withFetch(mdf3);
+  try {
+    const r = await call({ file: { download_url: "https://files.example/t.mdf", file_id: "f" } });
     assert.equal(r.isError, true);
-    assert.match(r.content[0].text, /Vector BLF files are not supported yet\. Export the trace as Vector ASC/);
+    assert.match(r.content[0].text, /MDF 3 files are not supported/);
+  } finally {
+    restore();
+  }
+  const eth = new Uint8Array(24);
+  new DataView(eth.buffer).setUint32(0, 0xa1b2c3d4, true);
+  new DataView(eth.buffer).setUint32(20, 1, true);
+  restore = withFetch(eth);
+  try {
+    const r = await call({ file: { download_url: "https://files.example/e.pcap", file_id: "f" } });
+    assert.equal(r.isError, true);
+    assert.match(r.content[0].text, /link type 1/);
   } finally {
     restore();
   }

@@ -8,7 +8,7 @@
 - [Examples](https://udslib.com/examples.html): 19 worked examples
 - [FAQ](https://udslib.com/faq.html): timing, ISO-TP, DTC, flashing, porting, licensing
 - [Pricing](https://udslib.com/pricing.html): free and commercial terms
-- [UDS trace viewer](https://udslib.com/viewer.html): drop a CAN trace (candump, ASC, TRC, CSV) and see why a UDS session or flash failed; parsed in the browser
+- [UDS trace viewer](https://udslib.com/viewer.html): drop a CAN trace (BLF, ASC, TRC, MF4, pcap, candump, CSV) and see why a UDS session or flash failed; parsed in the browser
 - [UDS toolbox MCP server](https://udslib.com/mcp.html): free MCP tools for analyzing CAN traces and decoding UDS, ISO-TP and DTCs
 - [White paper](https://udslib.com/whitepaper.html): architecture
 

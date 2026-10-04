@@ -188,22 +188,11 @@ function parseCsv(lines, frames, warnings) {
 
 const PARSERS = { candump: parseCandump, asc: parseAsc, trc: parseTrc, csv: parseCsv };
 
-/** Binary formats we can name but not parse yet. Returns a name or null. */
-export function binaryKind(bytes) {
-  const b = bytes;
-  const s = (o, n) => String.fromCharCode(...b.slice(o, o + n));
-  if (b.length >= 4 && s(0, 4) === "LOGG") return "Vector BLF";
-  if (b.length >= 8 && s(0, 8) === "MDF     ") return "ASAM MDF";
-  if (b.length >= 4 && ((b[0] === 0xd4 && b[1] === 0xc3) || (b[0] === 0xa1 && b[1] === 0xb2))) return "pcap";
-  if (b.length >= 4 && b[0] === 0x0a && b[1] === 0x0d && b[2] === 0x0d && b[3] === 0x0a) return "pcapng";
-  return null;
-}
-
 export function parseTrace(text, opts = {}) {
   if (typeof text !== "string") throw new TypeError("trace text must be a string");
   const warnings = [];
   const format = opts.format && opts.format !== "auto" ? opts.format : detectFormat(text);
-  if (!format) throw new Error("Could not recognise the trace format. Supported: candump, Vector ASC, PEAK TRC, SavvyCAN or python-can CSV.");
+  if (!format) throw new Error("Could not recognise the trace format. Supported: candump, Vector ASC, PEAK TRC, SavvyCAN or python-can CSV as text; Vector BLF, pcap/pcapng (SocketCAN) and ASAM MF4 as uploaded files.");
   if (!PARSERS[format]) throw new Error(`Unknown format "${format}". Supported: ${FORMATS.join(", ")}.`);
   const lines = text.split(/\r?\n/);
   const raw = [];

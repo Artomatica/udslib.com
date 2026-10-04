@@ -1,5 +1,6 @@
 import { ToolInputError } from "../errors.mjs";
-import { parseTrace, binaryKind, FORMATS } from "./parse.mjs";
+import { parseTrace, FORMATS } from "./parse.mjs";
+import { parseBinaryTrace, binaryFormat } from "./binary.mjs";
 import { analyzeTrace, analysisText } from "./analyze.mjs";
 
 export const MAX_TRACE_BYTES = 10 * 1024 * 1024;
@@ -23,11 +24,6 @@ async function readFile(file) {
   return buf;
 }
 
-function textOf(bytes) {
-  const kind = binaryKind(bytes);
-  if (kind) throw new ToolInputError(`${kind} files are not supported yet. Export the trace as Vector ASC, PEAK TRC, candump log or CSV and try again.`);
-  return new TextDecoder("utf-8").decode(bytes);
-}
 
 /** Keep structured output small enough for a chat client: drop the image, cap lists. */
 export function trimAnalysis(a) {
@@ -55,17 +51,17 @@ export function trimAnalysis(a) {
 export async function analyzeTraceTool(args = {}) {
   const a = args ?? {};
   if (a.format !== undefined && a.format !== "auto" && !FORMATS.includes(a.format)) throw new ToolInputError(`Unknown format "${a.format}". Use auto, ${FORMATS.join(", ")}.`);
-  let text;
-  if (typeof a.trace === "string" && a.trace.trim()) {
-    if (a.trace.length > MAX_TRACE_BYTES) throw new ToolInputError("Pasted trace is over 10 MB; upload a smaller excerpt.");
-    text = a.trace;
-  } else if (a.file) text = textOf(await readFile(a.file));
-  else throw new ToolInputError('Give the trace as "trace" (pasted text) or "file" (an uploaded candump, ASC, TRC or CSV file).');
   let parsed;
   try {
-    parsed = parseTrace(text, { format: a.format });
+    if (typeof a.trace === "string" && a.trace.trim()) {
+      if (a.trace.length > MAX_TRACE_BYTES) throw new ToolInputError("Pasted trace is over 10 MB; upload a smaller excerpt.");
+      parsed = parseTrace(a.trace, { format: a.format });
+    } else if (a.file) {
+      const bytes = await readFile(a.file);
+      parsed = binaryFormat(bytes) ? await parseBinaryTrace(bytes) : parseTrace(new TextDecoder("utf-8").decode(bytes), { format: a.format });
+    } else throw new ToolInputError('Give the trace as "trace" (pasted text) or "file" (an uploaded candump, ASC, TRC, CSV, BLF, pcap/pcapng or MF4 file).');
   } catch (e) {
-    throw new ToolInputError(e.message);
+    throw e instanceof ToolInputError ? e : new ToolInputError(e.message);
   }
   if (!parsed.frames.length) throw new ToolInputError(`No CAN frames found in the ${parsed.format} trace.${parsed.warnings.length ? " " + parsed.warnings[0] : ""}`);
   const analysis = analyzeTrace(parsed.frames, { format: parsed.format });

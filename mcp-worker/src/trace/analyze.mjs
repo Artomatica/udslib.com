@@ -88,6 +88,14 @@ function reassemble(frames) {
   return { messages, isotpFindings: findings };
 }
 
+/** Conventional tester id for a response id: 7E8..7EF -> 7E0..7E7, 18DAxxyy -> 18DAyyxx. */
+function partnerId(id) {
+  const n = parseInt(id, 16);
+  if (id.length === 3 && n >= 0x7e8 && n <= 0x7ef) return hx(n - 8, 3);
+  if (id.length === 8 && /^18D[AB]/i.test(id)) return id.slice(0, 4) + id.slice(6, 8) + id.slice(4, 6);
+  return null;
+}
+
 function pairMessages(messages) {
   const pairs = [];
   const open = []; // requests awaiting a final response
@@ -108,16 +116,17 @@ function pairMessages(messages) {
     if (!isResponseSid(b)) { singles.push(m); continue; }
     const neg = b === 0x7f;
     const sid = neg ? m.bytes[1] : b - 0x40;
-    // newest open request for this SID, preferring the learned tester id, within the response window
-    let best = -1;
+    // Pick the open request for this SID within the response window. Prefer the tester this ECU answered
+    // before, then the conventional partner id (7E8 -> 7E0, 18DAF110 -> 18DA10F1), then the newest.
+    let best = -1, bestScore = 0;
+    const partner = partnerId(m.id);
     for (let k = open.length - 1; k >= 0; k--) {
       const p = open[k];
       if (p.sid !== sid || p.testerId === m.id) continue;
       const since = m.t - (p.pending.length ? p.pending[p.pending.length - 1].t : p.reqT);
-      if (since > RESPONSE_WINDOW_MS) continue;
-      if (learned.has(m.id) && learned.get(m.id) !== p.testerId) { if (best < 0) best = k; continue; }
-      best = k;
-      break;
+      if (since > RESPONSE_WINDOW_MS || since < 0) continue;
+      const score = learned.get(m.id) === p.testerId ? 3 : partner === p.testerId ? 2 : 1;
+      if (score > bestScore) { best = k; bestScore = score; }
     }
     if (best < 0) { singles.push(m); continue; }
     const p = open[best];
@@ -246,8 +255,23 @@ function analyzeFlash(pairs, findings) {
 export function analyzeTrace(frames, opts = {}) {
   const { messages, isotpFindings } = reassemble(frames);
   const traceEnd = frames.length ? frames[frames.length - 1].t : 0;
-  const { pairs: raw } = pairMessages(messages);
-  const findings = isotpFindings.map((f) => ({ ...f, t: frames[f.frameRefs[0]]?.t ?? 0 }));
+  const { pairs: all } = pairMessages(messages);
+  // Ordinary bus traffic can look like ISO-TP or a UDS request by accident. Keep requests only from
+  // ids that got at least one response or sit in the usual diagnostic ranges, and ISO-TP findings
+  // only for ids that take part in diagnostics.
+  const answered = new Set(all.filter((p) => p.rsp || p.pending.length).map((p) => p.testerId));
+  const STD = (id) => /^7(DF|E[0-9A-F])$/.test(id) || /^18D[AB]/.test(id);
+  const diagId = (id) => answered.has(id) || STD(id);
+  const raw = all.filter((p) => diagId(p.testerId));
+  raw.forEach((p, k) => (p.n = k));
+  const diagIds = new Set(raw.flatMap((p) => [p.testerId, p.ecuId]).filter(Boolean));
+  const findings = isotpFindings
+    .filter((f) => {
+      const fr = frames[f.frameRefs[0]];
+      const id = fr && idText(fr.id, fr.ext);
+      return id && (diagIds.has(id) || STD(id));
+    })
+    .map((f) => ({ ...f, t: frames[f.frameRefs[0]]?.t ?? 0 }));
   const pairs = raw.map((p) => summarizePair(p, traceEnd));
 
   // security

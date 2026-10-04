@@ -1,8 +1,9 @@
 import { handleRpc } from "./mcp.mjs";
+import { handleFeedback } from "./feedback.mjs";
 
 const CORS = {
   "access-control-allow-origin": "*",
-  "access-control-allow-methods": "POST, OPTIONS",
+  "access-control-allow-methods": "GET, POST, OPTIONS",
   "access-control-allow-headers": "content-type, mcp-protocol-version, mcp-session-id, authorization",
   "access-control-max-age": "86400",
 };
@@ -34,6 +35,7 @@ export default {
       const res = await handleRpc(body);
       return res === null ? new Response(null, { status: 202, headers: CORS }) : json(res);
     }
+    if (url.pathname === "/feedback") return handleFeedback(request, env, CORS);
     if (url.pathname === "/.well-known/openai-apps-challenge" && request.method === "GET") {
       // Domain-verification token for the OpenAI plugin directory, set with `wrangler secret put OPENAI_APPS_CHALLENGE`.
       if (!env.OPENAI_APPS_CHALLENGE) return new Response("Not found", { status: 404, headers: CORS });
