@@ -216,7 +216,7 @@ export function parseTrace(text, opts = {}) {
       const x = /x$/i.test(f.idText);
       const txt = f.idText.replace(/x$/i, "");
       id = f.dec ? parseInt(txt, 10) : parseInt(txt, 16);
-      ext = ext || x || txt.length > 3 || id > 0x7ff;
+      ext = ext || x || id > 0x7ff;
     }
     return { i, t: f.ts === undefined ? i : Math.round((f.ts - t0) * 1000) / 1000, id, ext, dir: f.dir, data: f.data, fd: !!f.fd };
   });

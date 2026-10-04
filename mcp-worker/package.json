@@ -1,1 +1,16 @@
-{"name":"udslib-mcp","private":true,"type":"module","scripts":{"test":"node --test test/","dev":"wrangler dev","deploy":"wrangler deploy"},"devDependencies":{"wrangler":"^4"}}
+{
+  "name": "udslib-mcp",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test --test-concurrency=1 test/",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "build": "node scripts/build-viewer.mjs",
+    "fixtures": "node scripts/make-fixtures.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.12",
+    "wrangler": "^4"
+  }
+}

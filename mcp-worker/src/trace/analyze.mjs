@@ -279,8 +279,13 @@ export function analyzeTrace(frames, opts = {}) {
     if (p.status === "timeout" || p.status === "noResponse") {
       const nextReq = pairs.find((q) => q.n > p.n && q.testerId === p.testerId && q.sid !== 0x3e); // keep-alives are not a new step
       const severity = p.status === "timeout" && !nextReq ? "error" : "warning";
-      findings.push({ severity, code: "timeout", title: `No response to ${pairLabel(p)}`,
-        detail: p.status === "timeout" ? `No final response within ${Math.round(p.waitedMs)} ms${p.pendingCount ? ` after ${p.pendingCount} responsePending` : ""}${nextReq ? "; the tester moved on" : "; the ECU went silent until the end of the trace"}.` : `The trace ends ${Math.round(p.waitedMs)} ms after the request.`,
+      const gap = nextReq ? round(nextReq.reqT - p.reqT) : null;
+      const detail = nextReq
+        ? `No response for ${Math.round(gap)} ms${p.pendingCount ? ` after ${p.pendingCount} responsePending` : ""}; the tester then ${nextReq.request === p.request ? "repeated the same request" : `sent ${pairLabel(nextReq)}`}.`
+        : p.status === "timeout"
+          ? `No final response within ${Math.round(p.waitedMs)} ms${p.pendingCount ? ` after ${p.pendingCount} responsePending` : ""}; the ECU went silent until the end of the trace.`
+          : `The trace ends ${Math.round(p.waitedMs)} ms after the request.`;
+      findings.push({ severity, code: "timeout", title: `No response to ${pairLabel(p)}`, detail,
         frameRefs: p.frameRefs, pairRef: p.n, t: p.reqT });
     }
   }

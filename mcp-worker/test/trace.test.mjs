@@ -129,3 +129,17 @@ test("performance: 100k frames analyzed in under 2 s", () => {
   assert.ok(a.pairs.length > 1000);
   assert.ok(ms < 2000, `${ms} ms`);
 });
+
+test("zero-padded 11-bit ids (TRC 07E0, SavvyCAN 000007E0) stay standard ids", () => {
+  for (const ext of ["trc", "savvycan.csv"]) {
+    const a = analyzeTrace(parseTrace(fx(`flash-ok.${ext}`)).frames);
+    assert.deepEqual(a.summary.ecus, [{ tester: "7E0", ecu: "7E8" }], ext);
+  }
+});
+
+test("an unanswered block that the tester repeats is reported as repeated, not as trace end", () => {
+  const a = analyzeTrace(parseTrace(fx("flash-ok.asc")).frames);
+  const f = a.findings.find((x) => x.code === "timeout");
+  assert.equal(f.severity, "warning");
+  assert.match(f.detail, /No response for 2\d\d ms; the tester then repeated the same request/);
+});
