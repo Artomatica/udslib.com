@@ -131,3 +131,11 @@ test("tools/list: every tool has a title and all three ChatGPT safety hints", as
     assert.equal(t.annotations.destructiveHint, false, t.name);
   }
 });
+
+test("worker: OpenAI domain challenge served from the secret, 404 when unset", async () => {
+  const req = () => new Request("https://mcp.udslib.com/.well-known/openai-apps-challenge");
+  assert.equal((await worker.fetch(req(), {})).status, 404);
+  const r = await worker.fetch(req(), { OPENAI_APPS_CHALLENGE: "tok-123\n" });
+  assert.equal(r.status, 200);
+  assert.equal(await r.text(), "tok-123");
+});
