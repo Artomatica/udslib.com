@@ -40,25 +40,62 @@
 <div class="wrap page-title prose">
 <h1>Privacy policy</h1>
 <p class="muted">Last updated 4 October 2026.</p>
-<p>This policy covers the website udslib.com and the uds-toolbox MCP server at mcp.udslib.com, both run by Andrii Shylenko e.v. (Hungary). Contact: <a href="mailto:andrii@shylenko.com">andrii@shylenko.com</a>.</p>
-<h2>uds-toolbox MCP server</h2>
+<p>This policy covers the website udslib.com and the uds-toolbox MCP server at mcp.udslib.com (also published as the UDS Toolbox plugin for ChatGPT and other AI clients). Both are run by Andrii Shylenko e.v., Hungary, the data controller. Contact: <a href="mailto:andrii@shylenko.com">andrii@shylenko.com</a>.</p>
+
+<h2 id="summary">Short version</h2>
+<p>The UDS Toolbox plugin needs no account and keeps nothing you send it. It turns the bytes, CAN frames or DTCs in a request into an answer and forgets them. The website counts visits with Google Analytics.</p>
+
+<h2 id="categories">Categories of personal data we collect</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Where</th><th>Data</th></tr></thead>
+<tbody>
+<tr><td>UDS Toolbox plugin / MCP server</td><td>Tool inputs you or your AI client send (hex bytes, CAN frames, DTC codes, topic words, target names). These are not personal data unless you type personal data into them; we ask you not to. Technical connection data (IP address, user agent, time) handled by our hosting provider. We do not receive your name, email, account details or chat history.</td></tr>
+<tr><td>Website udslib.com</td><td>Pages viewed, clicks on links and buttons, approximate location, device and browser type, and a pseudonymous Google Analytics cookie ID. Connection data (IP address) in hosting logs.</td></tr>
+<tr><td>Email to us</td><td>Your name, email address and whatever you write; for license orders, company and billing details.</td></tr>
+</tbody>
+</table></div>
+
+<h2 id="purposes">Purposes of use</h2>
 <ul>
-<li>The server needs no account and asks for no personal data.</li>
-<li>Tool inputs (hex bytes, CAN frames, DTCs, topics, target names) are processed in memory to build the reply and are not stored or logged by us.</li>
-<li>We keep no conversation content. When you use the server through ChatGPT, Claude or another client, that client's own privacy terms apply to your conversation.</li>
-<li>The server runs on Cloudflare Workers. Cloudflare processes connection data such as IP addresses to deliver and protect the service, under the <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare privacy policy</a>. We see only aggregate request counts.</li>
-<li>Do not paste secrets such as production security keys into tool inputs. The tools do not need them.</li>
+<li>Plugin inputs: only to compute the answer to that request.</li>
+<li>Connection data: to deliver the service and protect it against abuse.</li>
+<li>Website analytics: to see which pages and examples are useful and improve the site.</li>
+<li>Email: to answer you, and for license orders to issue the contract and invoice and meet accounting duties.</li>
 </ul>
-<h2>Website</h2>
+<p>We do not sell personal data, use it for advertising profiles, or use plugin inputs to train models.</p>
+
+<h2 id="recipients">Categories of recipients</h2>
 <ul>
-<li>udslib.com is hosted on GitHub Pages, which logs visitor IP addresses for security (<a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub privacy statement</a>).</li>
-<li>We use Google Analytics 4 to count page views and clicks (for example on the email link or the MCP copy buttons). Google sets cookies for this. You can block them with your browser settings or the <a href="https://tools.google.com/dlpage/gaoptout">Google Analytics opt-out add-on</a>.</li>
-<li>If you email us, we keep the email to answer you and, for license orders, as long as accounting law requires.</li>
+<li>Hosting and network provider: Cloudflare, Inc. runs the MCP server (Cloudflare Workers) and DNS (<a href="https://www.cloudflare.com/privacypolicy/">privacy policy</a>).</li>
+<li>Website hosting: GitHub, Inc. (GitHub Pages) (<a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">privacy statement</a>).</li>
+<li>Web analytics: Google LLC (Google Analytics 4) (<a href="https://policies.google.com/privacy">privacy policy</a>).</li>
+<li>Email: our email provider, and our accountant for license invoices.</li>
+<li>Your AI client (for example ChatGPT) sends your request to us and receives the answer under its own privacy terms. We do not send it any other data.</li>
 </ul>
-<h2>Your rights</h2>
-<p>Under the GDPR you can ask what we hold about you, and ask us to correct or delete it. Write to <a href="mailto:andrii@shylenko.com">andrii@shylenko.com</a>. You can also complain to the Hungarian data protection authority (NAIH).</p>
-<h2>Changes</h2>
-<p>We will update the date above when this policy changes.</p>
+<p>Some of these providers process data outside the EU under EU Standard Contractual Clauses or the EU-US Data Privacy Framework.</p>
+
+<h2 id="retention">Retention</h2>
+<ul>
+<li>Plugin tool inputs and outputs: not stored. They exist in memory only while the request is processed (normally under one second). We keep no request logs with inputs.</li>
+<li>Connection data at Cloudflare: kept by Cloudflare for its security and operations purposes, typically no more than 30 days; we see only aggregate request counts.</li>
+<li>Google Analytics: event data is kept for 2 months, then deleted; aggregate reports remain.</li>
+<li>Email: kept as long as needed to answer you, at most 2 years; license order records 8 years as Hungarian accounting law requires.</li>
+</ul>
+
+<h2 id="controls">Your controls and rights</h2>
+<ul>
+<li>Use the plugin without giving any personal data: it needs no account. Do not paste secrets such as production security keys into tool inputs; the tools do not need them.</li>
+<li>Disconnect the plugin at any time in your AI client's settings.</li>
+<li>Block analytics cookies in your browser or with the <a href="https://tools.google.com/dlpage/gaoptout">Google Analytics opt-out add-on</a>.</li>
+<li>Under the GDPR you can ask for access to, correction or deletion of your data, restriction of or objection to processing, and data portability. Write to <a href="mailto:andrii@shylenko.com">andrii@shylenko.com</a>; we answer within 30 days.</li>
+<li>You can complain to the Hungarian National Authority for Data Protection and Freedom of Information (NAIH, <a href="https://naih.hu">naih.hu</a>) or your local authority.</li>
+</ul>
+
+<h2 id="children">Children</h2>
+<p>The plugin and site are for engineers and are not directed at children under 16.</p>
+
+<h2 id="changes">Changes</h2>
+<p>We will update the date above and this page when this policy changes.</p>
 </div>
 </main>
 <footer class="site-footer">
