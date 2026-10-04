@@ -28,7 +28,7 @@ test("notification returns null", async () => {
 test("tools/list names", async () => {
   const r = await handleRpc(rpc("tools/list"));
   assert.deepEqual(r.result.tools.map((t) => t.name), [
-    "decode_uds", "build_uds_request", "decode_isotp", "decode_dtc", "uds_reference", "udslib_integration",
+    "analyze_trace", "decode_uds", "build_uds_request", "decode_isotp", "decode_dtc", "uds_reference", "udslib_integration",
   ]);
   for (const t of r.result.tools) assert.equal(t.inputSchema.type, "object");
 });

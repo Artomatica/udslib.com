@@ -93,5 +93,5 @@ test("validation", () => {
 test("tool registered", () => {
   const r = TOOLS.find((t) => t.name === "udslib_integration").run({ rtos: "zephyr" });
   assert.equal(r.data.example.name, "zephyr_uds_server");
-  assert.equal(TOOLS.length, 6);
+  assert.equal(TOOLS.length, 7);
 });

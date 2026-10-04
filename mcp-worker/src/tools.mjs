@@ -4,6 +4,7 @@ import { decodeIsotp } from "./isotp.mjs";
 import { decodeDtc } from "./dtc.mjs";
 import { udsReference } from "./reference.mjs";
 import { udslibIntegration } from "./udslib.mjs";
+import { analyzeTraceTool } from "./trace/tool.mjs";
 export { ToolInputError };
 
 const stub = (name, description) => ({
@@ -16,6 +17,32 @@ const stub = (name, description) => ({
 });
 
 export const TOOLS = [
+  {
+    name: "analyze_trace",
+    description:
+      "Analyze a whole CAN trace of a UDS diagnostic or flash session and say what went wrong. Accepts candump logs, Vector ASC, PEAK TRC (1.x/2.x), SavvyCAN or python-can CSV, pasted as text or uploaded as a file. Reassembles ISO-TP, pairs requests with responses (including 0x78 responsePending), measures P2/P2*, follows sessions and security access, reconstructs RequestDownload/TransferData into an image with CRC32, extracts identification DIDs, and returns a root-cause finding with the frames that show it. Shows an interactive timeline.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        trace: { type: "string", description: "The trace text (candump, ASC, TRC or CSV). Use this or file." },
+        file: {
+          type: "object",
+          description: "An uploaded trace file.",
+          properties: { download_url: { type: "string" }, file_id: { type: "string" }, file_name: { type: "string" }, mime_type: { type: "string" } },
+          required: ["download_url", "file_id"],
+        },
+        format: { type: "string", enum: ["auto", "candump", "asc", "trc", "csv"], description: "Default auto-detect." },
+      },
+    },
+    _meta: {
+      "openai/fileParams": ["file"],
+      "openai/outputTemplate": "ui://widget/trace-viewer.html",
+      "openai/toolInvocation/invoking": "Analyzing trace…",
+      "openai/toolInvocation/invoked": "Trace analyzed",
+      "openai/widgetAccessible": true,
+    },
+    run: (args) => analyzeTraceTool(args),
+  },
   {
     name: "decode_uds",
     description:
