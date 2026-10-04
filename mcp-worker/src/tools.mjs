@@ -1,6 +1,8 @@
 import { ToolInputError } from "./errors.mjs";
 import { decodeUds, buildUdsRequest } from "./uds.mjs";
 import { decodeIsotp } from "./isotp.mjs";
+import { decodeDtc } from "./dtc.mjs";
+import { udsReference } from "./reference.mjs";
 export { ToolInputError };
 
 const stub = (name, description) => ({
@@ -83,7 +85,26 @@ export const TOOLS = [
     },
     run: (args) => decodeIsotp(args),
   },
-  stub("decode_dtc", "Decode a DTC."),
-  stub("uds_reference", "UDS reference lookup."),
+  {
+    name: "decode_dtc",
+    description:
+      "Convert a 3-byte UDS DTC to the SAE J2012 style code (P/C/B/U + digits) plus failure type byte, or the reverse (\"U0073-00\" to hex). With a status byte, explains each of the 8 DTC status bits.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        dtc: { type: "string", description: 'Three bytes hex ("01 23 45") or a code ("P0123-45").' },
+        status: { type: ["string", "integer"], description: 'Optional status byte, e.g. "0x09".' },
+      },
+      required: ["dtc"],
+    },
+    run: (args) => decodeDtc(args),
+  },
+  {
+    name: "uds_reference",
+    description:
+      "Short UDS reference with ISO 14229-1 clause pointers (paraphrased). Topics: a service ID (0x27) or name, an NRC (0x78 or \"nrc 78\"), a DID (F190) or RID (FF00), timing (p2, p2*, s3), sessions, security (0x27 vs 0x29), reprogramming_sequence. Unknown topics return a topic list.",
+    inputSchema: { type: "object", properties: { topic: { type: "string" } }, required: ["topic"] },
+    run: (args) => udsReference(args),
+  },
   stub("udslib_integration", "UDSLib integration plan."),
 ];
