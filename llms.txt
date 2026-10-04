@@ -15,5 +15,5 @@
 
 - [Source on GitHub](https://github.com/w1ne/udslib)
 - [Service compliance](https://github.com/w1ne/udslib/blob/develop/docs/SERVICE_COMPLIANCE.md)
-- MCP endpoint: https://udslib-mcp.shylenkoa.workers.dev/mcp
+- MCP endpoint: https://mcp.udslib.com/mcp
 - Contact: andrii@shylenko.com

@@ -1,1 +1,9 @@
-{"name":"udslib-mcp","main":"src/index.mjs","account_id":"53f45abe9550f62856af4475880e0a77","compatibility_date":"2026-10-02","workers_dev":true,"preview_urls":false}
+{
+  "name": "udslib-mcp",
+  "main": "src/index.mjs",
+  "account_id": "53f45abe9550f62856af4475880e0a77",
+  "compatibility_date": "2026-10-02",
+  "workers_dev": true,
+  "preview_urls": false,
+  "routes": [{ "pattern": "mcp.udslib.com", "custom_domain": true }]
+}
