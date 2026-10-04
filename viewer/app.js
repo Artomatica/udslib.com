@@ -25,8 +25,8 @@ Payload: ${m(s.slice(1))||"(none)"}`,data:b}}let d=D[o],c={kind:n,sid:o,service:
     <header class="udsv-head">
       <div class="chips">
         <span class="chip">${n.frames.toLocaleString()} frames</span><span class="chip">${g(C(n.durationMs))}</span>
-        <span class="chip">${n.pairs} requests</span><span class="chip ${n.negative?"bad":""}">${n.negative} negative</span>
-        <span class="chip ${n.timeouts?"bad":""}">${n.timeouts} timeouts</span>${n.format?`<span class="chip">${g(n.format)}</span>`:""}
+        <span class="chip">${n.pairs} request${n.pairs===1?"":"s"}</span><span class="chip ${n.negative?"bad":""}">${n.negative} negative</span>
+        <span class="chip ${n.timeouts?"bad":""}">${n.timeouts} timeout${n.timeouts===1?"":"s"}</span>${n.format?`<span class="chip">${g(n.format)}</span>`:""}
         ${n.ecus.map(i=>`<span class="chip">${g(i.tester)} → ${g(i.ecu)}</span>`).join("")}
       </div>
       ${s.toolbar??""}

@@ -93,8 +93,8 @@ export function renderAnalysis(root, a, opts = {}) {
     <header class="udsv-head">
       <div class="chips">
         <span class="chip">${s.frames.toLocaleString()} frames</span><span class="chip">${esc(ms(s.durationMs))}</span>
-        <span class="chip">${s.pairs} requests</span><span class="chip ${s.negative ? "bad" : ""}">${s.negative} negative</span>
-        <span class="chip ${s.timeouts ? "bad" : ""}">${s.timeouts} timeouts</span>${s.format ? `<span class="chip">${esc(s.format)}</span>` : ""}
+        <span class="chip">${s.pairs} request${s.pairs === 1 ? "" : "s"}</span><span class="chip ${s.negative ? "bad" : ""}">${s.negative} negative</span>
+        <span class="chip ${s.timeouts ? "bad" : ""}">${s.timeouts} timeout${s.timeouts === 1 ? "" : "s"}</span>${s.format ? `<span class="chip">${esc(s.format)}</span>` : ""}
         ${s.ecus.map((e) => `<span class="chip">${esc(e.tester)} → ${esc(e.ecu)}</span>`).join("")}
       </div>
       ${opts.toolbar ?? ""}

@@ -332,7 +332,7 @@ export function analyzeTrace(frames, opts = {}) {
 export function analysisText(a, maxLines = 40) {
   const L = [];
   const s = a.summary;
-  L.push(`Trace: ${s.frames} frames, ${(s.durationMs / 1000).toFixed(2)} s, ${s.isotpMessages} ISO-TP messages, ${s.pairs} UDS request/response pairs (${s.positive} positive, ${s.negative} negative, ${s.timeouts} timeouts)${s.format ? `, format ${s.format}` : ""}.`);
+  L.push(`Trace: ${s.frames} frames, ${(s.durationMs / 1000).toFixed(2)} s, ${s.isotpMessages} ISO-TP messages, ${s.pairs} UDS request/response pairs (${s.positive} positive, ${s.negative} negative, ${s.timeouts} timeout${s.timeouts === 1 ? "" : "s"})${s.format ? `, format ${s.format}` : ""}.`);
   if (s.ecus.length) L.push(`Tester/ECU: ${s.ecus.map((e) => `${e.tester} -> ${e.ecu}`).join(", ")}`);
   L.push(a.rootCause ? `ROOT CAUSE: ${a.rootCause.title}. ${a.rootCause.detail} (frames ${a.rootCause.frameRefs.slice(0, 6).join(", ")})` : "No errors found: every request got a final positive answer or was recovered.");
   for (const f of a.flash) L.push(`Flash to 0x${hx(f.address, 8)}: ${f.bytesTransferred}/${f.size} bytes in ${f.blocks} blocks, ${f.retransmits} retransmit(s), ${f.throughputBps ?? "?"} B/s, CRC32 ${f.crc32}, ${f.complete ? "complete" : "INCOMPLETE"}.`);

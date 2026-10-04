@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "uds-toolbox",
-  "version": "1.0.0",
-  "description": "Decode and build UDS (ISO 14229), ISO-TP and DTC data for automotive diagnostics.",
+  "version": "1.1.0",
+  "description": "Analyze CAN traces of UDS (ISO 14229) diagnostic and flash sessions, and decode UDS, ISO-TP and DTC data.",
   "author": {
     "name": "Andrii Shylenko",
     "url": "https://udslib.com"
@@ -23,25 +23,25 @@
     "com.openai": {
       "interface": {
         "displayName": "UDS Toolbox",
-        "shortDescription": "Decode car diagnostic messages",
+        "shortDescription": "Find why a UDS flash failed",
         "developerName": "Andrii Shylenko",
         "category": "Developer Tools",
         "websiteURL": "https://udslib.com/mcp.html",
         "defaultPrompt": [
+          "Here is my CAN trace of a failed ECU flash. Why did it fail?",
           "My ECU answered 7F 34 78. What does it mean?",
-          "Decode this candump ISO-TP trace and flag any timing errors.",
           "Build a RequestDownload for 0x08000000, 64 KiB."
         ],
-        "longDescription": "UDS Toolbox helps automotive and embedded engineers work with UDS (ISO 14229) diagnostics. Paste raw bytes, a candump trace or a DTC and it explains them: service, sub-function, data identifiers, negative response codes and their usual causes, ISO-TP framing and timing errors, and DTC status bits. It can also build request bytes (for example a RequestDownload for a flash address) and answer reference questions about timing, sessions, security access and the reprogramming sequence. It works offline on the message text only: no account, no hardware, nothing stored. Made by the authors of the UDSLib embedded stack.",
+        "longDescription": "UDS Toolbox finds out why a UDS (ISO 14229) diagnostic or flash session failed. Attach or paste a CAN trace from candump, Vector CANoe/CANalyzer (ASC), PEAK PCAN-View (TRC) or SavvyCAN/python-can (CSV) and it reassembles ISO-TP, pairs every request with its response (including 0x78 responsePending), measures P2/P2* timing, follows sessions and security access, rebuilds the downloaded image with its CRC32, and names the root cause with the frames that show it. The result opens as an interactive timeline. It also decodes single UDS messages, ISO-TP frames and DTCs, builds request bytes, and answers reference questions. No account, no hardware; nothing you send is stored. Made by the authors of the UDSLib embedded stack.",
         "supportURL": "https://udslib.com/terms.html#support",
         "privacyPolicyURL": "https://udslib.com/privacy.html",
         "termsOfServiceURL": "https://udslib.com/terms.html",
         "capabilities": [
+          "Analyze CAN traces",
           "Decode UDS messages",
           "Decode ISO-TP CAN traces",
           "Build UDS requests",
-          "Decode DTCs",
-          "UDS reference"
+          "Decode DTCs"
         ],
         "logo": "./assets/icon.svg",
         "composerIcon": "./assets/icon.svg"
@@ -50,6 +50,12 @@
       "review": {
         "test_cases": {
           "positive": [
+            {
+              "description": "Find the root cause of a failed flash in a trace file",
+              "prompt": "Here is a PEAK PCAN-View trace of a failed ECU flash (attach https://udslib.com/viewer/examples/flash-fail.trc). Why did it fail?",
+              "tools_triggered": "analyze_trace",
+              "expected_behavior": "Shows the trace viewer and states the root cause: TransferData block #4 was refused with 7F 36 73 wrongBlockSequenceCounter after blocks 1 and 2 (512 of 1024 bytes), then the ECU did not answer the next eraseMemory request. Also reports the earlier rejected security key and the VIN W0L000043MB541326."
+            },
             {
               "description": "Explain a negative response from an ECU.",
               "prompt": "My ECU answered 7F 34 78 to a RequestDownload. What does that mean?",
@@ -73,12 +79,6 @@
               "prompt": "What is DTC C0 73 00 with status 0x2F?",
               "tools_triggered": "decode_dtc",
               "expected_behavior": "Returns U0073-00 (network domain) and lists the set status bits: testFailed, testFailedThisOperationCycle, pendingDTC, confirmedDTC, testFailedSinceLastClear."
-            },
-            {
-              "description": "Look up the standard reprogramming flow.",
-              "prompt": "What is the usual UDS sequence to reflash an ECU?",
-              "tools_triggered": "uds_reference",
-              "expected_behavior": "Returns the 17-step sequence (extended session, DTC off, communication control, programming session, security access, fingerprint, erase, download, transfer, exit, check, reset, restore) and notes it is a common OEM pattern, not mandated by ISO 14229."
             }
           ],
           "negative": [
@@ -107,7 +107,7 @@
         "demo_recording_url": "https://udslib.com/review/walkthrough.mp4"
       },
       "publication": {
-        "release_notes": "Initial public release: six offline, read-only UDS/ISO-TP/DTC tools served from https://mcp.udslib.com/mcp. No account, no hardware access, nothing stored."
+        "release_notes": "1.1.0 adds analyze_trace: upload or paste a candump, ASC, TRC or CSV trace and get the root cause of a failed UDS session or flash, with an interactive timeline. Seven offline, read-only tools at https://mcp.udslib.com/mcp; nothing stored."
       }
     }
   }
