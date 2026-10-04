@@ -1,6 +1,22 @@
 import { TOOLS, ToolInputError } from "./tools.mjs";
+import WIDGET_HTML from "./generated/widget-html.mjs";
+
+export const SERVER_VERSION = "1.1.0";
+const WIDGET_URI = "ui://widget/trace-viewer.html";
+const WIDGET = {
+  uri: WIDGET_URI,
+  name: "UDS trace viewer",
+  description: "Timeline of a UDS diagnostic session from a CAN trace",
+  mimeType: "text/html+skybridge",
+};
+const WIDGET_META = {
+  "openai/widgetCSP": { connect_domains: [], resource_domains: [] },
+  "openai/widgetDescription": "Timeline of a UDS diagnostic session from a CAN trace: root cause, flash progress and decoded request/response pairs.",
+  "openai/widgetPrefersBorder": true,
+};
 
 const TITLES = {
+  analyze_trace: "Analyze CAN trace",
   decode_uds: "Decode UDS message",
   build_uds_request: "Build UDS request",
   decode_isotp: "Decode ISO-TP trace",
@@ -43,8 +59,8 @@ export async function handleRpc(message) {
       const v = params?.protocolVersion;
       return ok(id, {
         protocolVersion: SUPPORTED.includes(v) ? v : SUPPORTED[0],
-        capabilities: { tools: { listChanged: false } },
-        serverInfo: { name: "uds-toolbox", version: "1.0.0" },
+        capabilities: { tools: { listChanged: false }, resources: { listChanged: false } },
+        serverInfo: { name: "uds-toolbox", version: SERVER_VERSION },
         instructions: INSTRUCTIONS,
       });
     }
@@ -52,15 +68,24 @@ export async function handleRpc(message) {
       return ok(id, {});
     case "tools/list":
       return ok(id, {
-        tools: TOOLS.map(({ name, description, inputSchema }) => ({
+        tools: TOOLS.map(({ name, description, inputSchema, _meta }) => ({
           name,
           title: TITLES[name],
           description,
           inputSchema,
-          // Every tool is a pure function over static tables: no writes, no outside calls.
+          // Every tool computes from its input and static tables (analyze_trace may read the user's own uploaded file):
+          // no writes, no other outside calls.
           annotations: { readOnlyHint: true, openWorldHint: false, destructiveHint: false, idempotentHint: true },
+          ...(_meta ? { _meta } : {}),
         })),
       });
+    case "resources/list":
+      return ok(id, { resources: [{ ...WIDGET, _meta: WIDGET_META }] });
+    case "resources/templates/list":
+      return ok(id, { resourceTemplates: [] });
+    case "resources/read":
+      if (params?.uri !== WIDGET_URI) return err(id, -32602, `Unknown resource: ${params?.uri}`);
+      return ok(id, { contents: [{ uri: WIDGET_URI, mimeType: WIDGET.mimeType, text: WIDGET_HTML, _meta: WIDGET_META }] });
     case "tools/call": {
       const r = await callTool(params);
       return r.error ? err(id, r.error[0], r.error[1]) : ok(id, r.result);

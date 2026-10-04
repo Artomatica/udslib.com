@@ -5,17 +5,17 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
-URL = "https://mcp.udslib.com/mcp"
+URL = __import__("os").environ.get("MCP_URL", "https://mcp.udslib.com/mcp")
 OUT = ROOT / "review"
 PLUGIN = json.loads((ROOT / "plugins/uds-toolbox/plugin.json").read_text())
 CASES = PLUGIN["extensions"]["com.openai"]["review"]["test_cases"]
 # Arguments a client would send for each scenario, in order (positive then negative).
 CALLS = [
+    ("analyze_trace", {"trace": (ROOT / "viewer/examples/flash-fail.trc").read_text()}),
     ("decode_uds", {"hex": "7F 34 78"}),
     ("decode_isotp", {"frames": "can0 7E8 [8] 10 0B 62 F1 90 57 30 4C\ncan0 7E0 [3] 30 00 00\ncan0 7E8 [8] 21 31 32 33 34 35 36"}),
     ("build_uds_request", {"service": "request_download", "address": "0x08000000", "size": "0x10000"}),
     ("decode_dtc", {"dtc": "C0 73 00", "status": "0x2F"}),
-    ("uds_reference", {"topic": "reprogramming_sequence"}),
     ("decode_uds", {"hex": "ZZ 12"}),
     ("build_uds_request", {"service": "security_seed", "level": 2}),
     ("decode_isotp", {"frames": []}),
@@ -60,11 +60,13 @@ def render(results, version, stamp):
             d.text((60, 215), f"{r['kind']}-{i + 1}  {label}: {r['description']}", font=font(26), fill=colour)
             d.text((60, 270), "Prompt", font=font(24), fill="#93b4ff")
             d.text((60, 302), r["prompt"][:110], font=font(20), fill="white")
-            d.text((60, 350), f"Tool: {r['tool']}   arguments: {json.dumps(r['arguments'])[:80]}", font=font(20), fill="#c8ccd4")
+            shown = {k: (v if len(str(v)) < 60 else f"<{len(str(v))} chars of trace>") for k, v in r["arguments"].items()}
+            d.text((60, 350), f"Tool: {r['tool']}   arguments: {json.dumps(shown)[:90]}", font=font(20), fill="#c8ccd4")
             d.text((60, 400), "Server output" + ("  (rejected as expected)" if r["kind"] == "NEGATIVE" else ""), font=font(24), fill="#93b4ff")
             y = 435
-            for line in r["output"].splitlines()[:16]:
-                d.text((60, y), line[:118], font=mono, fill="white"); y += 24
+            wrapped = [w for line in r["output"].splitlines() for w in (__import__("textwrap").wrap(line, 110, subsequent_indent="  ") or [""])]
+            for line in wrapped[:16]:
+                d.text((60, y), line, font=mono, fill="white"); y += 24
             d.text((60, 840), f"Executed {stamp} • offline decoding only, no vehicle access, no certification claim", font=font(20), fill="#c8ccd4")
             im.save(f"{tmp}/{i:02d}.png")
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-framerate", "1/12", "-i", f"{tmp}/%02d.png",
