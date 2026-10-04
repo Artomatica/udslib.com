@@ -11,7 +11,7 @@ const json = (body, status = 200, extra = {}) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", ...CORS, ...extra } });
 
 export default {
-  async fetch(request) {
+  async fetch(request, env = {}) {
     const url = new URL(request.url);
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
     if (url.pathname === "/mcp") {
@@ -33,6 +33,11 @@ export default {
       }
       const res = await handleRpc(body);
       return res === null ? new Response(null, { status: 202, headers: CORS }) : json(res);
+    }
+    if (url.pathname === "/.well-known/openai-apps-challenge" && request.method === "GET") {
+      // Domain-verification token for the OpenAI plugin directory, set with `wrangler secret put OPENAI_APPS_CHALLENGE`.
+      if (!env.OPENAI_APPS_CHALLENGE) return new Response("Not found", { status: 404, headers: CORS });
+      return new Response(env.OPENAI_APPS_CHALLENGE.trim(), { headers: { "content-type": "text/plain; charset=utf-8", ...CORS } });
     }
     if (url.pathname === "/" && request.method === "GET") {
       return new Response("uds-toolbox MCP server. Endpoint: POST /mcp. Docs: https://udslib.com/mcp.html\n", {
