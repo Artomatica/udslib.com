@@ -2,6 +2,7 @@ import { ToolInputError } from "./errors.mjs";
 
 /** Parse hex text ("22 f1 90", "0x22,0xF1", "22F190") or an int array into bytes. */
 export function parseHex(input) {
+  if (input instanceof Uint8Array) return input;
   if (Array.isArray(input)) {
     for (const b of input) {
       if (!Number.isInteger(b) || b < 0 || b > 255) throw new ToolInputError(`Invalid byte value in array: ${JSON.stringify(b)} (expected integers 0-255)`);

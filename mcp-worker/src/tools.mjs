@@ -1,5 +1,6 @@
 import { ToolInputError } from "./errors.mjs";
 import { decodeUds, buildUdsRequest } from "./uds.mjs";
+import { decodeIsotp } from "./isotp.mjs";
 export { ToolInputError };
 
 const stub = (name, description) => ({
@@ -61,7 +62,27 @@ export const TOOLS = [
     },
     run: (args) => buildUdsRequest(args),
   },
-  stub("decode_isotp", "Decode ISO-TP frames."),
+  {
+    name: "decode_isotp",
+    description:
+      "Reassemble ISO-TP (ISO 15765-2) messages from CAN frames, per CAN id, and decode each as UDS. Reports frame types (SF/FF/CF/FC), flow-control BS/STmin, sequence-number errors, interrupted messages, padding, and N_Bs/N_Cr/STmin timing warnings when timestamps (ms) are given. Accepts a frame list or a candump text dump.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        frames: {
+          description: 'Array of {id, data, t?} (id hex string or number, data hex string or byte array, t in ms), or a candump-style multiline string.',
+          anyOf: [
+            { type: "array", items: { type: "object", properties: { id: { type: ["string", "integer"] }, data: { type: ["string", "array"] }, t: { type: "number" } }, required: ["data"] } },
+            { type: "string" },
+          ],
+        },
+        padding: { type: "boolean", description: "true: warn on unpadded short frames; false: warn when padding bytes appear." },
+        decodeUds: { type: "boolean", description: "Decode each reassembled message as UDS (default true)." },
+      },
+      required: ["frames"],
+    },
+    run: (args) => decodeIsotp(args),
+  },
   stub("decode_dtc", "Decode a DTC."),
   stub("uds_reference", "UDS reference lookup."),
   stub("udslib_integration", "UDSLib integration plan."),
