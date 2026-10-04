@@ -1,0 +1,114 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "uds-toolbox",
+  "version": "1.0.0",
+  "description": "Decode and build UDS (ISO 14229), ISO-TP and DTC data for automotive diagnostics.",
+  "author": {
+    "name": "Andrii Shylenko",
+    "url": "https://udslib.com"
+  },
+  "homepage": "https://udslib.com/mcp.html",
+  "repository": "https://github.com/Artomatica/udslib.com",
+  "license": "MIT",
+  "keywords": [
+    "uds",
+    "iso-14229",
+    "iso-tp",
+    "can",
+    "dtc",
+    "automotive",
+    "diagnostics"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "UDS Toolbox",
+        "shortDescription": "Decode car diagnostic messages",
+        "developerName": "Andrii Shylenko",
+        "category": "Developer Tools",
+        "websiteURL": "https://udslib.com/mcp.html",
+        "defaultPrompt": [
+          "My ECU answered 7F 34 78. What does it mean?",
+          "Decode this candump ISO-TP trace and flag any timing errors.",
+          "Build a RequestDownload for 0x08000000, 64 KiB."
+        ],
+        "longDescription": "UDS Toolbox helps automotive and embedded engineers work with UDS (ISO 14229) diagnostics. Paste raw bytes, a candump trace or a DTC and it explains them: service, sub-function, data identifiers, negative response codes and their usual causes, ISO-TP framing and timing errors, and DTC status bits. It can also build request bytes (for example a RequestDownload for a flash address) and answer reference questions about timing, sessions, security access and the reprogramming sequence. It works offline on the message text only: no account, no hardware, nothing stored. Made by the authors of the UDSLib embedded stack.",
+        "supportURL": "mailto:andrii@shylenko.com",
+        "privacyPolicyURL": "https://udslib.com/privacy.html",
+        "termsOfServiceURL": "https://udslib.com/terms.html",
+        "capabilities": [
+          "Decode UDS messages",
+          "Decode ISO-TP CAN traces",
+          "Build UDS requests",
+          "Decode DTCs",
+          "UDS reference"
+        ],
+        "logo": "./assets/icon.svg",
+        "composerIcon": "./assets/icon.svg"
+      },
+      "onboardingSkill": "./skills/uds-toolbox/SKILL.md",
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Explain a negative response from an ECU.",
+              "prompt": "My ECU answered 7F 34 78 to a RequestDownload. What does that mean?",
+              "tools_triggered": "decode_uds",
+              "expected_behavior": "Explains it is a negative response to RequestDownload (0x34) with NRC 0x78 responsePending: not an error, the ECU needs more time, and the tester should wait using the extended P2* timeout."
+            },
+            {
+              "description": "Reassemble a multi-frame ISO-TP trace.",
+              "prompt": "Decode this CAN trace: 7E8 10 0B 62 F1 90 57 30 4C, 7E0 30 00 00, 7E8 21 31 32 33 34 35 36",
+              "tools_triggered": "decode_isotp",
+              "expected_behavior": "Reassembles one 11-byte message on 0x7E8 (62 F1 90 57 30 4C 31 32 33 34 35), identifies the flow control frame, and decodes it as a positive ReadDataByIdentifier response for DID F190 (VIN)."
+            },
+            {
+              "description": "Build request bytes for flashing.",
+              "prompt": "Build the UDS RequestDownload for address 0x08000000, 64 KiB, no compression.",
+              "tools_triggered": "build_uds_request",
+              "expected_behavior": "Returns 34 00 44 08 00 00 00 00 01 00 00 with a breakdown: dataFormatIdentifier 00, addressAndLengthFormatIdentifier 44, address 0x08000000, size 0x10000."
+            },
+            {
+              "description": "Decode a DTC and its status byte.",
+              "prompt": "What is DTC C0 73 00 with status 0x2F?",
+              "tools_triggered": "decode_dtc",
+              "expected_behavior": "Returns U0073-00 (network domain) and lists the set status bits: testFailed, testFailedThisOperationCycle, pendingDTC, confirmedDTC, testFailedSinceLastClear."
+            },
+            {
+              "description": "Look up the standard reprogramming flow.",
+              "prompt": "What is the usual UDS sequence to reflash an ECU?",
+              "tools_triggered": "uds_reference",
+              "expected_behavior": "Returns the 17-step sequence (extended session, DTC off, communication control, programming session, security access, fingerprint, erase, download, transfer, exit, check, reset, restore) and notes it is a common OEM pattern, not mandated by ISO 14229."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Reject non-hex input",
+              "prompt": "Decode this UDS message: ZZ 12",
+              "tools_triggered": "decode_uds",
+              "expected_behavior": "The tool rejects the input as not valid hex and says so; it does not invent a decoding."
+            },
+            {
+              "description": "Reject an invalid security level",
+              "prompt": "Build a SecurityAccess requestSeed for level 2.",
+              "tools_triggered": "build_uds_request",
+              "expected_behavior": "The tool rejects it because requestSeed levels are odd (level 2 is the matching sendKey); it explains instead of returning bytes."
+            },
+            {
+              "description": "Reject an empty trace",
+              "prompt": "Decode this ISO-TP trace: (nothing pasted)",
+              "tools_triggered": "decode_isotp",
+              "expected_behavior": "The tool reports that no frames were given and asks for the trace; it does not fabricate frames."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "This plugin does not process purchases or payments. The UDSLib library license is sold separately by email.",
+        "demo_recording_url": "https://udslib.com/review/walkthrough.mp4"
+      },
+      "publication": {
+        "release_notes": "Initial public release: six offline, read-only UDS/ISO-TP/DTC tools served from https://mcp.udslib.com/mcp. No account, no hardware access, nothing stored."
+      }
+    }
+  }
+}
