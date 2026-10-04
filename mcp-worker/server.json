@@ -1,0 +1,19 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.udslib/uds-toolbox",
+  "title": "UDS Toolbox",
+  "description": "Decode UDS (ISO 14229), ISO-TP traces and DTCs, build UDS requests, look up NRCs. No hardware.",
+  "version": "1.0.0",
+  "websiteUrl": "https://udslib.com/mcp.html",
+  "repository": {
+    "url": "https://github.com/Artomatica/udslib.com",
+    "source": "github",
+    "subfolder": "mcp-worker"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.udslib.com/mcp"
+    }
+  ]
+}
