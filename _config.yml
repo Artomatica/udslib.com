@@ -1,3 +1,4 @@
 exclude:
   - docs
   - README.md
+  - mcp-worker

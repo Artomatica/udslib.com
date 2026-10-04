@@ -1,0 +1,19 @@
+# UDSLib
+
+> UDSLib is a portable C99 implementation of ISO 14229-1 (UDS) with ISO-TP over CAN and CAN-FD. No heap allocation, 27 application services, MISRA-C:2012 checked in CI. Free for noncommercial use under PolyForm Noncommercial 1.0.0; commercial license 5,000 EUR.
+
+## Pages
+
+- [Home](https://udslib.com/): overview, services, comparison with iso14229
+- [Examples](https://udslib.com/examples.html): 19 worked examples
+- [FAQ](https://udslib.com/faq.html): timing, ISO-TP, DTC, flashing, porting, licensing
+- [Pricing](https://udslib.com/pricing.html): free and commercial terms
+- [UDS toolbox MCP server](https://udslib.com/mcp.html): free MCP tools for decoding UDS, ISO-TP and DTCs
+- [White paper](https://udslib.com/whitepaper.html): architecture
+
+## Links
+
+- [Source on GitHub](https://github.com/w1ne/udslib)
+- [Service compliance](https://github.com/w1ne/udslib/blob/develop/docs/SERVICE_COMPLIANCE.md)
+- MCP endpoint: https://udslib-mcp.REPLACE.workers.dev/mcp
+- Contact: andrii@shylenko.com
