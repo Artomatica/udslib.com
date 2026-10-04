@@ -33,7 +33,7 @@
           "Build a RequestDownload for 0x08000000, 64 KiB."
         ],
         "longDescription": "UDS Toolbox helps automotive and embedded engineers work with UDS (ISO 14229) diagnostics. Paste raw bytes, a candump trace or a DTC and it explains them: service, sub-function, data identifiers, negative response codes and their usual causes, ISO-TP framing and timing errors, and DTC status bits. It can also build request bytes (for example a RequestDownload for a flash address) and answer reference questions about timing, sessions, security access and the reprogramming sequence. It works offline on the message text only: no account, no hardware, nothing stored. Made by the authors of the UDSLib embedded stack.",
-        "supportURL": "mailto:andrii@shylenko.com",
+        "supportURL": "https://udslib.com/terms.html#support",
         "privacyPolicyURL": "https://udslib.com/privacy.html",
         "termsOfServiceURL": "https://udslib.com/terms.html",
         "capabilities": [
