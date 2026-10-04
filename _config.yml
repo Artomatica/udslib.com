@@ -3,3 +3,5 @@ exclude:
   - README.md
   - mcp-worker
   - scripts
+include:
+  - .well-known
