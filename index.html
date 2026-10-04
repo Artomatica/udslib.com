@@ -98,15 +98,15 @@
 <tr><td>Memory</td><td>Static allocation</td><td>Static allocation, no heap</td></tr>
 <tr><td>Roles</td><td>Client and server</td><td>Server, plus a client API</td></tr>
 <tr><td>Community</td><td>About 370 GitHub stars, per its GitHub page</td><td>Small and young</td></tr>
-<tr><td>Reference DTC store</td><td>Not checked</td><td>Yes, opt-in, application-provided array</td></tr>
-<tr><td>Reprogramming examples</td><td>Not checked</td><td>17-step flash tool, STM32F103 ECU, STM32H563 OTA bootloader</td></tr>
-<tr><td>mbedTLS / wolfSSL security examples</td><td>Not checked</td><td>0x27 and 0x29 with AES-128-CMAC</td></tr>
-<tr><td>Wireshark dissector, Python bindings</td><td>Not checked</td><td>Both in <code>extras/</code></td></tr>
-<tr><td>Paid support</td><td>Not checked</td><td>1 year of email support with a 2-business-day target</td></tr>
+<tr><td>Reference DTC store</td><td>No; 0x19 is passed to the application as an event</td><td>Yes, opt-in, application-provided array</td></tr>
+<tr><td>Reprogramming examples</td><td>Yes: MCUboot + Zephyr firmware update on NUCLEO-G474RE</td><td>17-step flash tool, STM32F103 ECU, STM32H563 OTA bootloader</td></tr>
+<tr><td>mbedTLS / wolfSSL security examples</td><td>Yes: Linux SecurityAccess example with mbedTLS</td><td>0x27 and 0x29 with AES-128-CMAC</td></tr>
+<tr><td>Wireshark dissector, Python bindings</td><td>No own dissector or bindings; its examples use tshark and Python tools</td><td>Both in <code>extras/</code></td></tr>
+<tr><td>Paid support</td><td>None offered in its README</td><td>1 year of email support with a 2-business-day target</td></tr>
 </tbody>
 </table>
 </div>
-<p class="small muted">The iso14229 column lists only what we confirmed. &ldquo;Not checked&rdquo; means we did not look, not that it lacks the feature. If you need MIT licensing or the smallest possible footprint, start with iso14229.</p>
+<p class="small muted">The iso14229 column is based on its repository as of October 2026. If you need MIT licensing or the smallest possible footprint, start with iso14229.</p>
 </div>
 </section>
 
