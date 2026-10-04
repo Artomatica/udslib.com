@@ -1,0 +1,11 @@
+interface:
+  display_name: "UDS Toolbox"
+  short_description: "Decode UDS, ISO-TP and DTCs"
+  default_prompt: "Use $uds-toolbox to decode this UDS trace and explain any negative responses."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "uds-toolbox"
+      description: "Decode and build UDS, ISO-TP and DTC data offline"
+      transport: "streamable_http"
+      url: "https://mcp.udslib.com/mcp"
