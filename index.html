@@ -1,298 +1,145 @@
-<!DOCTYPE HTML>
-<!--
-	Spectral by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-	<title>UDSLib - The Portable ISO 14229 Stack</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-	<meta name="description" content="UDSLib is a lightweight, portable ISO 14229-1 (UDS) stack for embedded systems. MISRA-aligned, with deterministic memory and built-in tooling for Zephyr, bare metal, or Linux." />
-	<link rel="canonical" href="https://udslib.com/" />
-	<link rel="icon" type="image/svg+xml" href="favicon.svg" />
-	<meta property="og:type" content="website" />
-	<meta property="og:site_name" content="UDSLib" />
-	<meta property="og:title" content="UDSLib - The Portable ISO 14229 Stack" />
-	<meta property="og:description" content="UDSLib is a lightweight, portable ISO 14229-1 (UDS) stack for embedded systems. MISRA-aligned, with deterministic memory and built-in tooling for Zephyr, bare metal, or Linux." />
-	<meta property="og:url" content="https://udslib.com/" />
-	<meta property="og:image" content="https://udslib.com/images/banner.jpg" />
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="UDSLib - The Portable ISO 14229 Stack" />
-	<meta name="twitter:description" content="UDSLib is a lightweight, portable ISO 14229-1 (UDS) stack for embedded systems. MISRA-aligned, with deterministic memory and built-in tooling for Zephyr, bare metal, or Linux." />
-	<meta name="twitter:image" content="https://udslib.com/images/banner.jpg" />
-	<link rel="stylesheet" href="assets/css/main.css" />
-	<!-- Google tag (gtag.js) -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-JXF0DBSEDH"></script>
-	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
-	  gtag('config', 'G-JXF0DBSEDH');
-	</script>
-	<noscript>
-		<link rel="stylesheet" href="assets/css/noscript.css" />
-	</noscript>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UDSLib - Portable ISO 14229 UDS stack for embedded ECUs</title>
+<meta name="description" content="UDSLib is a C99 ISO 14229-1 (UDS) stack with ISO-TP over CAN and CAN-FD. Zero malloc, 27 application services, MISRA-aligned. Free for noncommercial use." />
+<link rel="canonical" href="https://udslib.com/" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="UDSLib" />
+<meta property="og:title" content="UDSLib - Portable ISO 14229 UDS stack for embedded ECUs" />
+<meta property="og:description" content="UDSLib is a C99 ISO 14229-1 (UDS) stack with ISO-TP over CAN and CAN-FD. Zero malloc, 27 application services, MISRA-aligned. Free for noncommercial use." />
+<meta property="og:url" content="https://udslib.com/" />
+<meta property="og:image" content="https://udslib.com/images/banner.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="UDSLib - Portable ISO 14229 UDS stack for embedded ECUs" />
+<meta name="twitter:description" content="UDSLib is a C99 ISO 14229-1 (UDS) stack with ISO-TP over CAN and CAN-FD. Zero malloc, 27 application services, MISRA-aligned. Free for noncommercial use." />
+<meta name="twitter:image" content="https://udslib.com/images/banner.jpg" />
+<link rel="stylesheet" href="style.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JXF0DBSEDH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JXF0DBSEDH');
+</script>
+<script src="site.js" defer></script>
 </head>
+<body>
+<header class="site-header">
+<div class="wrap">
+<a class="logo" href="/">UDSLib</a>
+<button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+<nav class="site-nav" id="site-nav" aria-label="Main"><ul><li><a href="examples.html">Examples</a></li><li><a href="faq.html">FAQ</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="mcp.html">MCP</a></li><li><a href="whitepaper.html">White paper</a></li><li><a href="https://github.com/w1ne/udslib">GitHub</a></li></ul></nav>
+</div>
+</header>
+<main>
+<section class="hero">
+<div class="wrap">
+<h1>Portable ISO 14229 UDS stack for embedded ECUs</h1>
+<p class="lead">UDSLib is a C99 implementation of ISO 14229-1 (UDS) with ISO-TP over CAN and CAN-FD. It allocates no heap, runs on Zephyr, FreeRTOS, bare metal and Linux, and implements all 27 application services. Source is available; commercial use needs a license.</p>
+<div class="cta-row">
+<a class="btn" href="examples.html">Browse examples</a>
+<a class="btn secondary" href="pricing.html">Pricing</a>
+</div>
+<p class="muted small">Free for noncommercial use &middot; 5,000 EUR commercial license</p>
+</div>
+</section>
 
-<body class="landing is-preload">
+<section>
+<div class="wrap">
+<h2>What you get</h2>
+<div class="cards">
+<div class="card"><h3>Zero malloc, C99</h3><p>All memory is owned by the application. No heap use anywhere in the stack.</p></div>
+<div class="card"><h3>ISO-TP built in</h3><p>ISO 15765-2 over classic CAN and CAN-FD, with flow control, STmin, block size and N_Cr / N_Bs timeouts. On Zephyr or Linux you can use the OS ISO-TP stack instead. See <a href="faq.html#iso-tp-timeouts">the FAQ</a>.</p></div>
+<div class="card"><h3>Runs where you need it</h3><p>Zephyr, FreeRTOS, bare metal super-loop, POSIX host simulator. STM32F103 and STM32H5 examples.</p></div>
+<div class="card"><h3>MISRA-aligned</h3><p>MISRA-C:2012 is checked in CI with no mandatory-rule violations. Required and advisory deviations are listed in <a href="https://github.com/w1ne/udslib/blob/develop/docs/MISRA.md">docs/MISRA.md</a>.</p></div>
+<div class="card"><h3>Client and server</h3><p>An ECU-side server stack, plus a small client (tester) API for host tools and test rigs.</p></div>
+<div class="card"><h3>Tooling</h3><p>Wireshark dissector, Python bindings (<code>pyudslib</code>), a host simulator, and an HTML session report for captured traces.</p></div>
+</div>
+</div>
+</section>
 
-	<!-- Page Wrapper -->
-	<div id="page-wrapper">
+<section class="band">
+<div class="wrap">
+<h2>All 27 application services</h2>
+<p>Every service listed below is dispatched by the core. Depth varies for a few of them; <a href="https://github.com/w1ne/udslib/blob/develop/docs/SERVICE_COMPLIANCE.md">docs/SERVICE_COMPLIANCE.md</a> lists the notes for each.</p>
+<ul class="services"><li><b>0x10</b>DiagnosticSessionControl</li><li><b>0x11</b>ECUReset</li><li><b>0x14</b>ClearDiagnosticInformation</li><li><b>0x19</b>ReadDTCInformation</li><li><b>0x22</b>ReadDataByIdentifier</li><li><b>0x23</b>ReadMemoryByAddress</li><li><b>0x24</b>ReadScalingDataByIdentifier</li><li><b>0x27</b>SecurityAccess</li><li><b>0x28</b>CommunicationControl</li><li><b>0x29</b>Authentication</li><li><b>0x2A</b>ReadDataByPeriodicIdentifier</li><li><b>0x2C</b>DynamicallyDefineDataIdentifier</li><li><b>0x2E</b>WriteDataByIdentifier</li><li><b>0x2F</b>InputOutputControlByIdentifier</li><li><b>0x31</b>RoutineControl</li><li><b>0x34</b>RequestDownload</li><li><b>0x35</b>RequestUpload</li><li><b>0x36</b>TransferData</li><li><b>0x37</b>RequestTransferExit</li><li><b>0x38</b>RequestFileTransfer</li><li><b>0x3D</b>WriteMemoryByAddress</li><li><b>0x3E</b>TesterPresent</li><li><b>0x83</b>AccessTimingParameter</li><li><b>0x84</b>SecuredDataTransmission</li><li><b>0x85</b>ControlDTCSetting</li><li><b>0x86</b>ResponseOnEvent</li><li><b>0x87</b>LinkControl</li></ul>
+</div>
+</section>
 
-		<!-- Header -->
-		<header id="header" class="alt">
-			<h1><a href="index.html">UDSLib</a></h1>
-			<nav id="nav">
-				<ul>
-					<li class="special">
-						<a href="#menu" class="menuToggle"><span>Menu</span></a>
-						<div id="menu">
-							<ul>
-								<li><a href="index.html">Home</a></li>
-								<!-- <li><a href="generic.html">Documentation</a></li> -->
-								<!-- <li><a href="elements.html">Elements</a></li> -->
-								<li><a href="https://github.com/w1ne/udslib">GitHub</a></li>
-								<li><a href="#features">Features</a></li>
-								<li><a href="#licensing">Licensing</a></li>
-								<li><a href="whitepaper.html">White&nbsp;Paper</a></li>
-								<li><a href="#cta">Contact</a></li>
-							</ul>
-						</div>
-					</li>
-				</ul>
-			</nav>
-		</header>
+<section>
+<div class="wrap">
+<h2>Most requested</h2>
+<p>These come from issues on GitHub. Each links to a runnable example.</p>
+<div class="cards">
+<div class="card"><h3>Every 0x19 sub-function</h3><p>How to cover all ReadDTCInformation sub-functions, split by what the library frames and what your application serves.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/dtc_full_coverage" data-example="dtc_full_coverage">Example: <code>dtc_full_coverage</code></a></p></div>
+<div class="card"><h3>Keeping DTCs across a reset</h3><p>The stack does not write flash. This example serializes the DTC store to a buffer that your NVM driver owns, then restores it.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/dtc_persist" data-example="dtc_persist">Example: <code>dtc_persist</code></a></p></div>
+<div class="card"><h3>STM32 bxCAN port</h3><p>CubeMX / HAL project for the STM32F103C8: ISO-TP over bxCAN, real flash programming, hardware CRC.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/f103_cubemx_uds_ecu" data-example="f103_cubemx_uds_ecu">Example: <code>f103_cubemx_uds_ecu</code></a></p></div>
+<div class="card"><h3>UDS OTA bootloader</h3><p>Dual-bank bootloader for the STM32H563 with a host download tool and rollback.</p><p class="small">OEM-specific flash sequences are integration work, not something the example claims to cover.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/h563_uds_bootloader" data-example="h563_uds_bootloader">Example: <code>h563_uds_bootloader</code></a></p></div>
+<div class="card"><h3>SecurityAccess with real crypto</h3><p>Seed to key with AES-128-CMAC behind the 0x27 hooks, built against mbedTLS or wolfSSL.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/security_access_mbedtls" data-example="security_access_mbedtls">Example: <code>security_access_mbedtls</code></a></p></div>
+</div>
+</div>
+</section>
 
-		<!-- Banner -->
-		<section id="banner">
-			<div class="inner">
-				<h2>UDSLib</h2>
-				<p>The Portable ISO 14229 Stack<br />
-					Universal. Portable. Safety‑first.<br />
-					A lightweight UDS stack for embedded systems.</p>
-				<ul class="actions special">
-					<li><a href="#licensing" class="button primary">Buy Commercial License</a></li>
-				</ul>
-			</div>
-			<a href="#one" class="more scrolly">Learn More</a>
-		</section>
+<section class="band">
+<div class="wrap">
+<h2>UDSLib and iso14229</h2>
+<p><a href="https://github.com/driftregion/iso14229">driftregion/iso14229</a> is the other open-source C UDS library people ask about. It is a good project. Here is where each one is stronger.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Topic</th><th>iso14229</th><th>UDSLib</th></tr></thead>
+<tbody>
+<tr><td>License</td><td>MIT</td><td>PolyForm Noncommercial 1.0.0, commercial license 5,000 EUR</td></tr>
+<tr><td>Distribution</td><td>Two files (header and source)</td><td>Source tree with CMake, several modules</td></tr>
+<tr><td>Memory</td><td>Static allocation</td><td>Static allocation, no heap</td></tr>
+<tr><td>Roles</td><td>Client and server</td><td>Server, plus a client API</td></tr>
+<tr><td>Community</td><td>About 370 GitHub stars, per its GitHub page</td><td>Small and young</td></tr>
+<tr><td>Reference DTC store</td><td>Not checked</td><td>Yes, opt-in, application-provided array</td></tr>
+<tr><td>Reprogramming examples</td><td>Not checked</td><td>17-step flash tool, STM32F103 ECU, STM32H563 OTA bootloader</td></tr>
+<tr><td>mbedTLS / wolfSSL security examples</td><td>Not checked</td><td>0x27 and 0x29 with AES-128-CMAC</td></tr>
+<tr><td>Wireshark dissector, Python bindings</td><td>Not checked</td><td>Both in <code>extras/</code></td></tr>
+<tr><td>Paid support</td><td>Not checked</td><td>1 year of email support with a 2-business-day target</td></tr>
+</tbody>
+</table>
+</div>
+<p class="small muted">The iso14229 column lists only what we confirmed. &ldquo;Not checked&rdquo; means we did not look, not that it lacks the feature. If you need MIT licensing or the smallest possible footprint, start with iso14229.</p>
+</div>
+</section>
 
-		<!-- One -->
-		<section id="one" class="wrapper style1 special">
-			<div class="inner">
-				<header class="major">
-					<h2>Production‑Ready UDS for Your Product</h2>
-					<p>MISRA‑aligned ISO 14229-1 stack with deterministic memory and built-in tooling.<br />
-						Ship faster on Zephyr, bare metal, or Linux with integration and support included.</p>
-				</header>
-				<div class="features-grid">
-					<div class="feature">
-						<span class="icon solid fa-server style1"></span>
-						<h3>MCUs to Linux</h3>
-						<p>Zero-libc core scales from 8‑bit controllers to gateways.</p>
-					</div>
-					<div class="feature">
-						<span class="icon fa-check-circle style2"></span>
-						<h3>Safety First</h3>
-						<p>MISRA‑aligned code, deterministic memory, hardened NRC logic.</p>
-					</div>
-					<div class="feature">
-						<span class="icon solid fa-code style3"></span>
-						<h3>Source Available</h3>
-						<p>Noncommercial use free; simple commercial license for production.</p>
-					</div>
-				</div>
-			</div>
-		</section>
+<section>
+<div class="wrap">
+<h2>UDS tools for your AI assistant</h2>
+<p>We run a free MCP server that decodes UDS messages, reassembles ISO-TP traces from CAN frames, builds requests, and explains DTCs and NRCs. It works with any UDS stack and needs no account. <a href="mcp.html">See the MCP page</a>.</p>
+</div>
+</section>
 
-		<!-- Two -->
-		<!-- Two -->
-		<section id="two" class="wrapper alt style2">
-			<div class="inner">
-				<div class="row">
-					<div class="col-4 col-12-medium">
-						<h3>Deterministic Memory</h3>
-						<p>Engineered for safety-critical environments. <strong>Zero Malloc</strong> design ensures no
-							heap
-							fragmentation. 100% Branch Coverage via unit tests.</p>
-					</div>
-					<div class="col-4 col-12-medium">
-						<h3>Hardware Abstraction</h3>
-						<p>Clean separation of concerns. The protocol logic is fully decoupled from the physical
-							transport
-							layer (CAN, ETH, UART), enabling rapid porting.</p>
-					</div>
-					<div class="col-4 col-12-medium">
-						<h3>Clear Licensing</h3>
-						<p>PolyForm Noncommercial 1.0.0 for community use. Commercial license (5,000&nbsp;EUR)
-							includes integration help and one year of support.</p>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- Licensing -->
-		<section id="licensing" class="wrapper style1 special">
-			<div class="inner">
-				<header class="major">
-					<h2>Licensing</h2>
-					<p>Fair for hobbyists. Simple for companies.</p>
-				</header>
-				<div class="row aln-center">
-					<div class="col-6 col-12-medium">
-						<h3>Community (Free)</h3>
-						<p>PolyForm Noncommercial 1.0.0. Use it for personal, research, or education — no production or
-							for-profit deployment.</p>
-					</div>
-					<div class="col-6 col-12-medium">
-						<h3>Commercial (5,000 EUR)</h3>
-						<p>Perpetual license for production + integration package (up to 40h) and 1 year of
-							support/updates. Email <a href="mailto:andrii@shylenko.com">andrii@shylenko.com</a> to
-							purchase.</p>
-					</div>
-				</div>
-				<ul class="actions special">
-					<li><a href="#cta" class="button primary">Talk to Us</a></li>
-				</ul>
-			</div>
-		</section>
-
-		<!-- Features -->
-		<section id="features" class="wrapper alt style2">
-			<div class="inner">
-				<header class="major">
-					<h2>Features</h2>
-				</header>
-				<div class="table-wrapper">
-					<table class="alt">
-						<tbody>
-							<tr>
-								<td><strong>Protocol</strong></td>
-								<td>ISO 14229-1 core services (0x10/11/14/19/22/27/28/2E/31/34/36/37/3E/85)</td>
-							</tr>
-							<tr>
-								<td><strong>Safety & Quality</strong></td>
-								<td>MISRA-aligned, deterministic memory, NRC priority enforcement</td>
-							</tr>
-							<tr>
-								<td><strong>Transports</strong></td>
-								<td>Zephyr ISO-TP sockets or built-in ISO-TP fallback (zero malloc)</td>
-							</tr>
-							<tr>
-								<td><strong>Platforms</strong></td>
-								<td>8‑bit MCUs to Linux gateways; Zephyr + POSIX host sim validated</td>
-							</tr>
-							<tr>
-								<td><strong>Tooling</strong></td>
-								<td>Host simulator, Wireshark dissector, Python validation harness</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</section>
-
-		<!-- Three -->
-		<section id="three" class="wrapper style3 special">
-			<div class="inner">
-				<header class="major">
-					<h2>Supported ISO 14229 Services</h2>
-				</header>
-				<div class="table-wrapper">
-					<table class="alt">
-						<tbody>
-							<tr>
-								<td>0x10</td>
-								<td>Diagnostic Session Control</td>
-								<td>0x34</td>
-								<td>Request Download</td>
-							</tr>
-							<tr>
-								<td>0x11</td>
-								<td>ECU Reset</td>
-								<td>0x36</td>
-								<td>Transfer Data</td>
-							</tr>
-							<tr>
-								<td>0x14</td>
-								<td>Clear Diagnostic Information</td>
-								<td>0x37</td>
-								<td>Request Transfer Exit</td>
-							</tr>
-							<tr>
-								<td>0x19</td>
-								<td>Read DTC Information</td>
-								<td>0x3E</td>
-								<td>Tester Present</td>
-							</tr>
-							<tr>
-								<td>0x22</td>
-								<td>Read Data By Identifier</td>
-								<td>0x85</td>
-								<td>Control DTC Setting</td>
-							</tr>
-							<tr>
-								<td>0x27</td>
-								<td>Security Access</td>
-								<td>0x28</td>
-								<td>Communication Control</td>
-							</tr>
-							<tr>
-								<td>0x2E</td>
-								<td>Write Data By Identifier</td>
-								<td>0x31</td>
-								<td>Routine Control</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</section>
-
-		<!-- CTA -->
-		<section id="cta" class="wrapper style4">
-			<div class="inner">
-				<header>
-					<h2>Standardize your diagnostics</h2>
-					<p>Evaluate the technical preview on GitHub.</p>
-				</header>
-				<ul class="actions stacked">
-					<li><a href="https://github.com/w1ne/udslib" class="button fit primary">View on GitHub</a>
-					</li>
-					<li><a href="mailto:andrii@shylenko.com" class="button fit">Contact Sales</a></li>
-				</ul>
-			</div>
-		</section>
-
-		<!-- Footer -->
-		<footer id="footer">
-			<ul class="icons">
-
-				<li><a href="https://github.com/w1ne/udslib" class="icon brands fa-github"><span
-							class="label">GitHub</span></a></li>
-				<li><a href="mailto:andrii@shylenko.com" class="icon solid fa-envelope"><span
-							class="label">Email</span></a></li>
-			</ul>
-			<ul class="copyright">
-				<li>&copy; UDSLib</li>
-				<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-			</ul>
-		</footer>
-
-	</div>
-
-	<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.scrollex.min.js"></script>
-	<script src="assets/js/jquery.scrolly.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
-
+<section class="band">
+<div class="wrap">
+<h2>Ready to evaluate?</h2>
+<p>Evaluation and prototyping are free. For production use, the commercial license is a single price with no royalties.</p>
+<div class="cta-row">
+<a class="btn" href="https://github.com/w1ne/udslib">View on GitHub</a>
+<a class="btn secondary" href="pricing.html">See pricing</a>
+<a class="btn secondary" href="mailto:andrii@shylenko.com">Email andrii@shylenko.com</a>
+</div>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+<div class="wrap">
+<ul>
+<li><a href="https://github.com/w1ne/udslib">GitHub</a></li>
+<li><a href="mailto:andrii@shylenko.com">andrii@shylenko.com</a></li>
+<li><a href="pricing.html">Pricing</a></li>
+<li><a href="mcp.html">UDS MCP server</a></li>
+<li><a href="https://iolinki.com">iolinki.com (IO-Link stack)</a></li>
+</ul>
+<p>&copy; Andrii Shylenko e.v.</p>
+</div>
+</footer>
 </body>
-
 </html>
