@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UDSLib examples - UDS server, DTC, security, flash</title>
+<meta name="description" content="Nineteen UDSLib examples: host simulator, Zephyr, FreeRTOS, STM32F103 and H5, DTC store and persistence, mbedTLS security, 17-step flash tool, OTA bootloader." />
+<link rel="canonical" href="https://udslib.com/examples.html" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="UDSLib" />
+<meta property="og:title" content="UDSLib examples - UDS server, DTC, security, flash" />
+<meta property="og:description" content="Nineteen UDSLib examples: host simulator, Zephyr, FreeRTOS, STM32F103 and H5, DTC store and persistence, mbedTLS security, 17-step flash tool, OTA bootloader." />
+<meta property="og:url" content="https://udslib.com/examples.html" />
+<meta property="og:image" content="https://udslib.com/images/banner.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="UDSLib examples - UDS server, DTC, security, flash" />
+<meta name="twitter:description" content="Nineteen UDSLib examples: host simulator, Zephyr, FreeRTOS, STM32F103 and H5, DTC store and persistence, mbedTLS security, 17-step flash tool, OTA bootloader." />
+<meta name="twitter:image" content="https://udslib.com/images/banner.jpg" />
+<link rel="stylesheet" href="style.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JXF0DBSEDH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JXF0DBSEDH');
+</script>
+<script src="site.js" defer></script>
+</head>
+<body>
+<header class="site-header">
+<div class="wrap">
+<a class="logo" href="/">UDSLib</a>
+<button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+<nav class="site-nav" id="site-nav" aria-label="Main"><ul><li><a href="examples.html" aria-current="page">Examples</a></li><li><a href="faq.html">FAQ</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="mcp.html">MCP</a></li><li><a href="whitepaper.html">White paper</a></li><li><a href="https://github.com/w1ne/udslib">GitHub</a></li></ul></nav>
+</div>
+</header>
+<main>
+<div class="wrap page-title">
+<h1>Examples</h1>
+<p>19 worked examples from the <a href="https://github.com/w1ne/udslib/tree/develop/examples">examples folder</a>. Each opens on GitHub. The one-line descriptions come from the example READMEs and source.</p>
+</div>
+<section><div class="wrap"><h2>Start here</h2><p class=muted>Run these on your PC with a plain compiler. No hardware.</p><div class="cards"><div class="card"><h3 class="name">host_sim</h3><p>A full UDS server simulator that exercises many services. The Python integration tests use it.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/host_sim" data-example="host_sim">View on GitHub</a></p></div><div class="card"><h3 class="name">client_demo</h3><p>Drives a server from the UDS client API.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/client_demo" data-example="client_demo">View on GitHub</a></p></div><div class="card"><h3 class="name">bare_metal</h3><p>Bare-metal super-loop integration skeleton.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/bare_metal" data-example="bare_metal">View on GitHub</a></p></div><div class="card"><h3 class="name">custom_service</h3><p>Adds a manufacturer-specific service, or overrides a built-in one, through <code>config.user_services</code> without editing the library.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/custom_service" data-example="custom_service">View on GitHub</a></p></div></div></div></section>
+<section><div class="wrap"><h2>Platforms</h2><p class=muted>Integration for real targets and RTOSes.</p><div class="cards"><div class="card"><h3 class="name">zephyr_uds_server</h3><p>Zephyr application, built with <code>west</code>. The shipped config builds for <code>native_sim</code>.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/zephyr_uds_server" data-example="zephyr_uds_server">View on GitHub</a></p></div><div class="card"><h3 class="name">freertos_demo</h3><p>Two FreeRTOS tasks sharing one UDS context: one feeds CAN frames in, one runs the periodic tick.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/freertos_demo" data-example="freertos_demo">View on GitHub</a></p></div><div class="card"><h3 class="name">f103_cubemx_uds_ecu</h3><p>STM32F103C8 (Blue Pill) CubeMX / HAL ECU. ISO-TP over bxCAN, real <code>HAL_FLASH</code> erase and program, hardware CRC.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/f103_cubemx_uds_ecu" data-example="f103_cubemx_uds_ecu">View on GitHub</a></p></div><div class="card"><h3 class="name">h5_uds_ecu_full</h3><p>ECU firmware for a virtual STM32H5 that serves all 27 services.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/h5_uds_ecu_full" data-example="h5_uds_ecu_full">View on GitHub</a></p></div><div class="card"><h3 class="name">h5_uds_tester</h3><p>Tester firmware on a second virtual H5 that requests all 27 services over a virtual FDCAN bus and checks each response. Runs headless with no CAN hardware.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/h5_uds_tester" data-example="h5_uds_tester">View on GitHub</a></p></div></div></div></section>
+<section><div class="wrap"><h2>DTC handling</h2><p class=muted>Storing, reading, clearing and persisting diagnostic trouble codes.</p><div class="cards"><div class="card"><h3 class="name">dtc_store</h3><p>The opt-in reference DTC store. It answers 0x19 (including snapshot and extended data) and 0x14, using an array you provide.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/dtc_store" data-example="dtc_store">View on GitHub</a></p></div><div class="card"><h3 class="name">dtc_persist</h3><p>Monitor, operation cycle, reset. Status, freeze frame and counters come back from a buffer that your own NVM driver stores. The library does not write flash.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/dtc_persist" data-example="dtc_persist">View on GitHub</a></p></div><div class="card"><h3 class="name">dtc_clear</h3><p>ClearDiagnosticInformation (0x14) through <code>uds_dtc_bind</code>: all groups versus one group, with conditionsNotCorrect and requestOutOfRange.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/dtc_clear" data-example="dtc_clear">View on GitHub</a></p></div><div class="card"><h3 class="name">dtc_full_coverage</h3><p>Every ReadDTCInformation (0x19) sub-function, split between library-framed and application-served.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/dtc_full_coverage" data-example="dtc_full_coverage">View on GitHub</a></p></div></div></div></section>
+<section><div class="wrap"><h2>Security</h2><p class=muted>SecurityAccess and Authentication hooks. The library bundles no cipher.</p><div class="cards"><div class="card"><h3 class="name">auth_challenge</h3><p>Authentication (0x29) challenge and response through <code>fn_auth</code>, with a placeholder tag and no crypto dependency.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/auth_challenge" data-example="auth_challenge">View on GitHub</a></p></div><div class="card"><h3 class="name">auth_challenge_mbedtls</h3><p>The same 0x29 flow with real AES-128-CMAC. Builds against mbedTLS or wolfSSL with identical output.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/auth_challenge_mbedtls" data-example="auth_challenge_mbedtls">View on GitHub</a></p></div><div class="card"><h3 class="name">security_access_mbedtls</h3><p>SecurityAccess (0x27) deriving the key from the seed with AES-128-CMAC. Two security levels, two secrets. mbedTLS or wolfSSL.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/security_access_mbedtls" data-example="security_access_mbedtls">View on GitHub</a></p></div></div></div></section>
+<section><div class="wrap"><h2>Reprogramming</h2><p class=muted>Flash and OTA flows.</p><div class="cards"><div class="card"><h3 class="name">pro_flash_tool</h3><p>A flash tool drives an ECU through the 17-step reprogramming sequence, in one process, and prints every request and response. Exits non-zero on failure, so it works as a CI smoke test.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/pro_flash_tool" data-example="pro_flash_tool">View on GitHub</a></p></div><div class="card"><h3 class="name">h563_uds_bootloader</h3><p>Dual-bank OTA bootloader for the STM32H563 with AES-128-CMAC on the 0x27 exchange, a host download tool over SocketCAN CAN-FD, and rollback of an image that never confirms.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/h563_uds_bootloader" data-example="h563_uds_bootloader">View on GitHub</a></p></div></div></div></section>
+<section><div class="wrap"><h2>Testing</h2><div class="cards"><div class="card"><h3 class="name">generated_tests</h3><p>Python tests for the main services, generated from a service spec.</p><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/generated_tests" data-example="generated_tests">View on GitHub</a></p></div></div></div></section>
+
+</main>
+<footer class="site-footer">
+<div class="wrap">
+<ul>
+<li><a href="https://github.com/w1ne/udslib">GitHub</a></li>
+<li><a href="mailto:andrii@shylenko.com">andrii@shylenko.com</a></li>
+<li><a href="pricing.html">Pricing</a></li>
+<li><a href="mcp.html">UDS MCP server</a></li>
+<li><a href="https://iolinki.com">iolinki.com (IO-Link stack)</a></li>
+</ul>
+<p>&copy; Andrii Shylenko e.v.</p>
+</div>
+</footer>
+</body>
+</html>

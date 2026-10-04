@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UDS toolbox MCP server - decode UDS, ISO-TP and DTC</title>
+<meta name="description" content="Free MCP server for AI assistants: decode UDS messages, reassemble ISO-TP from CAN frames, build requests, explain DTCs and NRCs. No account, no stored data." />
+<link rel="canonical" href="https://udslib.com/mcp.html" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="UDSLib" />
+<meta property="og:title" content="UDS toolbox MCP server - decode UDS, ISO-TP and DTC" />
+<meta property="og:description" content="Free MCP server for AI assistants: decode UDS messages, reassemble ISO-TP from CAN frames, build requests, explain DTCs and NRCs. No account, no stored data." />
+<meta property="og:url" content="https://udslib.com/mcp.html" />
+<meta property="og:image" content="https://udslib.com/images/banner.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="UDS toolbox MCP server - decode UDS, ISO-TP and DTC" />
+<meta name="twitter:description" content="Free MCP server for AI assistants: decode UDS messages, reassemble ISO-TP from CAN frames, build requests, explain DTCs and NRCs. No account, no stored data." />
+<meta name="twitter:image" content="https://udslib.com/images/banner.jpg" />
+<link rel="stylesheet" href="style.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JXF0DBSEDH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JXF0DBSEDH');
+</script>
+<script src="site.js" defer></script>
+</head>
+<body>
+<header class="site-header">
+<div class="wrap">
+<a class="logo" href="/">UDSLib</a>
+<button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+<nav class="site-nav" id="site-nav" aria-label="Main"><ul><li><a href="examples.html">Examples</a></li><li><a href="faq.html">FAQ</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="mcp.html" aria-current="page">MCP</a></li><li><a href="whitepaper.html">White paper</a></li><li><a href="https://github.com/w1ne/udslib">GitHub</a></li></ul></nav>
+</div>
+</header>
+<main>
+<div class="wrap page-title">
+<h1>UDS toolbox MCP server</h1>
+<p>A free MCP server with general UDS, ISO-TP and DTC tools for AI coding assistants. It works offline on the data you send it, needs no hardware or account, and does not store anything. It is not tied to UDSLib: use it with any UDS stack.</p>
+</div>
+<section><div class="wrap">
+<h2>Endpoint</h2>
+<div class="copy-block"><button class="copy-btn" type="button" data-copy="mcp-url" data-client="url">Copy</button><pre id="mcp-url"><code>https://udslib-mcp.shylenkoa.workers.dev/mcp</code></pre></div>
+<p class="small muted">Streamable HTTP, stateless. Tool inputs are processed in memory and are not stored or logged.</p>
+</div></section>
+
+<section class="band"><div class="wrap">
+<h2>Tools</h2>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody><tr><td><code>decode_uds</code></td><td>Decode a UDS message: service, sub-function, DIDs, routine IDs, DTCs, and the name and typical cause of a negative response code.</td></tr><tr><td><code>build_uds_request</code></td><td>Build the bytes for a UDS request such as ReadDataByIdentifier, SecurityAccess, RoutineControl or RequestDownload, with an annotated breakdown.</td></tr><tr><td><code>decode_isotp</code></td><td>Reassemble ISO-TP from a list of CAN frames or a candump log. Reports frame types, flow control values, sequence errors and N_Bs / N_Cr timing problems.</td></tr><tr><td><code>decode_dtc</code></td><td>Turn a 3-byte DTC into an SAE J2012 code (P0123-45 form) and explain the status byte bits.</td></tr><tr><td><code>uds_reference</code></td><td>Short reference notes with ISO 14229-1 clause numbers: services, NRCs, identifiers, P2 / P2* / S3 timing, sessions, and a typical reprogramming sequence.</td></tr><tr><td><code>udslib_integration</code></td><td>Suggests the UDSLib files, config settings, init skeleton and closest example for your target, RTOS and features, plus the license terms.</td></tr></tbody></table></div>
+</div></section>
+
+<section><div class="wrap">
+<h2>Add it to your client</h2>
+<h3>Claude Code</h3>
+<div class="copy-block"><button class="copy-btn" type="button" data-copy="cfg-claude-code" data-client="claude-code">Copy</button><pre id="cfg-claude-code"><code>claude mcp add --transport http uds-toolbox https://udslib-mcp.shylenkoa.workers.dev/mcp</code></pre></div>
+<h3>Claude Desktop and Cursor</h3>
+<p>Add this to the MCP servers config of the client.</p>
+<div class="copy-block"><button class="copy-btn" type="button" data-copy="cfg-json" data-client="claude-desktop-cursor">Copy</button><pre id="cfg-json"><code>{
+  &quot;mcpServers&quot;: {
+    &quot;uds-toolbox&quot;: {
+      &quot;url&quot;: &quot;https://udslib-mcp.shylenkoa.workers.dev/mcp&quot;
+    }
+  }
+}</code></pre></div>
+<h3>ChatGPT</h3>
+<p>Open Settings, then Connectors, add a custom connector, and paste the endpoint URL above.</p>
+</div></section>
+
+<section class="band"><div class="wrap">
+<h2>Things to ask</h2>
+<ul>
+<li>Decode this candump trace and tell me where the transfer failed.</li>
+<li>Why do I get <code>7F 34 78</code> after RequestDownload?</li>
+<li>Build a RequestDownload for address 0x08000000, 64 KiB.</li>
+<li>Plan UDSLib on an STM32F103 with FreeRTOS and a DTC store.</li>
+</ul>
+<p>Built by <a href="/">UDSLib</a>. Only the <code>udslib_integration</code> tool mentions it.</p>
+</div></section>
+</main>
+<footer class="site-footer">
+<div class="wrap">
+<ul>
+<li><a href="https://github.com/w1ne/udslib">GitHub</a></li>
+<li><a href="mailto:andrii@shylenko.com">andrii@shylenko.com</a></li>
+<li><a href="pricing.html">Pricing</a></li>
+<li><a href="mcp.html">UDS MCP server</a></li>
+<li><a href="https://iolinki.com">iolinki.com (IO-Link stack)</a></li>
+</ul>
+<p>&copy; Andrii Shylenko e.v.</p>
+</div>
+</footer>
+</body>
+</html>

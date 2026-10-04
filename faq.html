@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UDSLib FAQ - UDS timing, ISO-TP, DTC, licensing</title>
+<meta name="description" content="Answers on P2/P2*, NRC 0x78, S3, ISO-TP timeouts, CAN-FD, DTC storage, OTA flashing, porting, MISRA, DoIP and licensing for UDSLib." />
+<link rel="canonical" href="https://udslib.com/faq.html" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="UDSLib" />
+<meta property="og:title" content="UDSLib FAQ - UDS timing, ISO-TP, DTC, licensing" />
+<meta property="og:description" content="Answers on P2/P2*, NRC 0x78, S3, ISO-TP timeouts, CAN-FD, DTC storage, OTA flashing, porting, MISRA, DoIP and licensing for UDSLib." />
+<meta property="og:url" content="https://udslib.com/faq.html" />
+<meta property="og:image" content="https://udslib.com/images/banner.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="UDSLib FAQ - UDS timing, ISO-TP, DTC, licensing" />
+<meta name="twitter:description" content="Answers on P2/P2*, NRC 0x78, S3, ISO-TP timeouts, CAN-FD, DTC storage, OTA flashing, porting, MISRA, DoIP and licensing for UDSLib." />
+<meta name="twitter:image" content="https://udslib.com/images/banner.jpg" />
+<link rel="stylesheet" href="style.css" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JXF0DBSEDH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-JXF0DBSEDH');
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What are P2, P2* and NRC 0x78?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "P2 is how long the ECU may take to start answering a request. P2* is the longer deadline that applies after the ECU has sent NRC 0x78 (responsePending). In UDSLib, if a service takes longer than p2_ms (default 50 ms), the stack sends 0x78 itself and repeats it every p2_star_ms (default 5000 ms) until your handler finishes. A 0x78 is not an error. Both values can be changed at runtime with service 0x83. Details: docs/TIMING_AND_TIMEOUTS.md."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does the S3 timeout work, and what does TesterPresent do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If the tester stays silent for s3_ms (default 5000 ms), the ECU falls back to the default session and locks security again. TesterPresent (0x3E) restarts that timer. A suppressed TesterPresent (3E 80) keeps S3 alive without a response on the bus. See docs/TIMING_AND_TIMEOUTS.md."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which ISO-TP timeouts, STmin and block size does it use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The built-in ISO-TP honours the BlockSize and STmin that the peer sends in its flow control frames. STmin values 0x00 to 0x7F (ms) and 0xF1 to 0xF9 (sub-millisecond) are decoded. N_Cr (wait for the next consecutive frame) and N_Bs (wait for flow control after a first frame) both default to 1000 ms and can be set per channel. A stalled transfer is aborted rather than left hanging. See docs/TRANSPORT.md and docs/TIMING_AND_TIMEOUTS.md."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it support CAN-FD?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Call uds_tp_isotp_set_fd(&iso, true) and the ISO-TP layer uses CAN-FD single-frame format for payloads over 7 bytes and fills frames up to 64 bytes. Classic CAN is the default. See section 8 of docs/TRANSPORT.md."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "SecurityAccess (0x27) or Authentication (0x29)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "0x27 is the older seed and key exchange. 0x29 is the ISO 14229-1:2020 service for certificate or challenge based authentication. UDSLib implements both as plumbing: it validates requests, tracks state and frames responses, and calls your hooks for the cryptography (fn_security_seed / fn_security_key for 0x27, fn_auth for 0x29). No cipher is bundled, so keys can stay in an HSM. See the examples security_access_mbedtls and auth_challenge_mbedtls."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where do DTCs get stored? Does it write flash?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "UDSLib does not write flash. An optional reference store keeps DTC records in an array you provide and answers 0x19 and 0x14. To keep DTCs across a reset, serialize the store into a buffer and write that buffer with your own flash or EEPROM driver. Do not erase flash inside the 0x19 handler, because it is slow and the tester will time out. See dtc_persist and dtc_store."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are all 0x19 sub-functions supported?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The sub-function mask accepts all standard sub-functions (0x01 to 0x19, 0x42 and 0x55). The library formats the responses for several of them from the records your application supplies. The memory-region, by-record-number, emissions-OBD and user-defined-memory variants go to a raw fn_dtc_read hook, where your application formats the answer. Which is which is listed in docs/SERVICE_COMPLIANCE.md, and dtc_full_coverage shows both paths."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I do an OTA update or flash an ECU over UDS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "pro_flash_tool walks a 17-step sequence (sessions, DTC off, communication off, security, fingerprint, erase, download, check, reset, restore) with the exact bytes. h563_uds_bootloader is a dual-bank STM32H563 bootloader with rollback, and f103_cubemx_uds_ecu programs real flash on an STM32F103. Your OEM’s required sequence may differ. Adapting it is integration work."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I port it to a new MCU or CAN driver?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Provide a millisecond time source, TX and RX buffers, and a transport send function in uds_config_t. Feed each complete message to uds_input_sdu() and call uds_process() periodically. If you have no OS ISO-TP stack, use the built-in one: feed raw CAN frames to uds_isotp_rx_callback() and drive timing with uds_tp_isotp_process(). See docs/INTEGRATION_GUIDE.md and docs/TRANSPORT.md. The bare_metal and f103_cubemx_uds_ecu examples show it end to end."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much RAM and ROM does it need?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We do not publish size figures here. RAM is whatever buffers you give it: the TX and RX buffers, and one context per ISO-TP channel. The numbers depend on your compiler, options and the services you enable, so build the example closest to your target and read the map file."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it use malloc?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The stack uses no heap. The application provides every buffer and context, including the DTC store array and the ISO-TP channel contexts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it MISRA compliant? Is it ISO 26262 certified?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "MISRA-C:2012 is checked in CI with cppcheck’s MISRA addon. There are no mandatory-rule violations, and the Required and Advisory deviations are documented with reasons in docs/MISRA.md. That is not a certification. We make no ISO 26262 claim and ship no safety case or tool qualification."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it support DoIP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not today. The transport is ISO 15765-2 over CAN and CAN-FD. You can add a transport by providing your own send function and feeding complete messages to uds_input_sdu(), but we do not ship DoIP. See docs/TRANSPORT.md."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it work with ODX, CDD or CANoe?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is a script, odx_to_c.py, that generates a DID table in C from an ODX file. The docs cover ODX only. CANoe and other tools talk to the ECU over the bus like any UDS tester, so an ECU running UDSLib behaves as a normal UDS server. We have not published a CANoe guide. See docs/ODX_TOOLING.md."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my thesis or student project free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Personal, research and educational use is covered by the PolyForm Noncommercial 1.0.0 license at no cost. If you are a student and get stuck, email us. Help for verified student and thesis projects is at the maintainer’s discretion."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is internal tooling at a company commercial use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Any use inside a for-profit company beyond evaluation needs the commercial license. Evaluating UDSLib at a company before you buy is allowed: noncommercial development, testing and prototyping, with no production deployment. See pricing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does support cover?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The commercial license includes up to 40 hours of integration help, one year of updates, and email support with a 2-business-day response target. Renewal is 1,500 EUR per year and only covers updates and support, because the license itself is perpetual. Spec-conformance bug fixes are free for everyone: open an issue on GitHub. Details on the pricing page."
+      }
+    }
+  ]
+}
+</script>
+<script src="site.js" defer></script>
+</head>
+<body>
+<header class="site-header">
+<div class="wrap">
+<a class="logo" href="/">UDSLib</a>
+<button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+<nav class="site-nav" id="site-nav" aria-label="Main"><ul><li><a href="examples.html">Examples</a></li><li><a href="faq.html" aria-current="page">FAQ</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="mcp.html">MCP</a></li><li><a href="whitepaper.html">White paper</a></li><li><a href="https://github.com/w1ne/udslib">GitHub</a></li></ul></nav>
+</div>
+</header>
+<main>
+<div class="wrap page-title">
+<h1>Frequently asked questions</h1>
+<p>Timing, transport, DTCs, flashing, porting and licensing. Answers point at the docs in the repository. If something is missing, <a href="mailto:andrii@shylenko.com">email us</a>.</p>
+</div>
+<section><div class="wrap">
+<details id="p2-nrc-78"><summary>What are P2, P2* and NRC 0x78?</summary><div class="answer"><p>P2 is how long the ECU may take to start answering a request. P2* is the longer deadline that applies after the ECU has sent NRC 0x78 (responsePending). In UDSLib, if a service takes longer than <code>p2_ms</code> (default 50 ms), the stack sends 0x78 itself and repeats it every <code>p2_star_ms</code> (default 5000 ms) until your handler finishes. A 0x78 is not an error. Both values can be changed at runtime with service 0x83. Details: <a href="https://github.com/w1ne/udslib/blob/develop/docs/TIMING_AND_TIMEOUTS.md">docs/TIMING_AND_TIMEOUTS.md</a>.</p></div></details>
+<details id="s3-tester-present"><summary>How does the S3 timeout work, and what does TesterPresent do?</summary><div class="answer"><p>If the tester stays silent for <code>s3_ms</code> (default 5000 ms), the ECU falls back to the default session and locks security again. TesterPresent (0x3E) restarts that timer. A suppressed TesterPresent (<code>3E 80</code>) keeps S3 alive without a response on the bus. See <a href="https://github.com/w1ne/udslib/blob/develop/docs/TIMING_AND_TIMEOUTS.md">docs/TIMING_AND_TIMEOUTS.md</a>.</p></div></details>
+<details id="iso-tp-timeouts"><summary>Which ISO-TP timeouts, STmin and block size does it use?</summary><div class="answer"><p>The built-in ISO-TP honours the BlockSize and STmin that the peer sends in its flow control frames. STmin values 0x00 to 0x7F (ms) and 0xF1 to 0xF9 (sub-millisecond) are decoded. N_Cr (wait for the next consecutive frame) and N_Bs (wait for flow control after a first frame) both default to 1000 ms and can be set per channel. A stalled transfer is aborted rather than left hanging. See <a href="https://github.com/w1ne/udslib/blob/develop/docs/TRANSPORT.md">docs/TRANSPORT.md</a> and <a href="https://github.com/w1ne/udslib/blob/develop/docs/TIMING_AND_TIMEOUTS.md">docs/TIMING_AND_TIMEOUTS.md</a>.</p></div></details>
+<details id="can-fd"><summary>Does it support CAN-FD?</summary><div class="answer"><p>Yes. Call <code>uds_tp_isotp_set_fd(&amp;iso, true)</code> and the ISO-TP layer uses CAN-FD single-frame format for payloads over 7 bytes and fills frames up to 64 bytes. Classic CAN is the default. See section 8 of <a href="https://github.com/w1ne/udslib/blob/develop/docs/TRANSPORT.md">docs/TRANSPORT.md</a>.</p></div></details>
+<details id="security-27-vs-29"><summary>SecurityAccess (0x27) or Authentication (0x29)?</summary><div class="answer"><p>0x27 is the older seed and key exchange. 0x29 is the ISO 14229-1:2020 service for certificate or challenge based authentication. UDSLib implements both as plumbing: it validates requests, tracks state and frames responses, and calls your hooks for the cryptography (<code>fn_security_seed</code> / <code>fn_security_key</code> for 0x27, <code>fn_auth</code> for 0x29). No cipher is bundled, so keys can stay in an HSM. See the examples <a href="https://github.com/w1ne/udslib/tree/develop/examples/security_access_mbedtls" data-example="security_access_mbedtls">security_access_mbedtls</a> and <a href="https://github.com/w1ne/udslib/tree/develop/examples/auth_challenge_mbedtls" data-example="auth_challenge_mbedtls">auth_challenge_mbedtls</a>.</p></div></details>
+<details id="dtc-storage"><summary>Where do DTCs get stored? Does it write flash?</summary><div class="answer"><p>UDSLib does not write flash. An optional reference store keeps DTC records in an array you provide and answers 0x19 and 0x14. To keep DTCs across a reset, serialize the store into a buffer and write that buffer with your own flash or EEPROM driver. Do not erase flash inside the 0x19 handler, because it is slow and the tester will time out. See <a href="https://github.com/w1ne/udslib/tree/develop/examples/dtc_persist" data-example="dtc_persist">dtc_persist</a> and <a href="https://github.com/w1ne/udslib/tree/develop/examples/dtc_store" data-example="dtc_store">dtc_store</a>.</p></div></details>
+<details id="read-dtc-subfunctions"><summary>Are all 0x19 sub-functions supported?</summary><div class="answer"><p>The sub-function mask accepts all standard sub-functions (0x01 to 0x19, 0x42 and 0x55). The library formats the responses for several of them from the records your application supplies. The memory-region, by-record-number, emissions-OBD and user-defined-memory variants go to a raw <code>fn_dtc_read</code> hook, where your application formats the answer. Which is which is listed in <a href="https://github.com/w1ne/udslib/blob/develop/docs/SERVICE_COMPLIANCE.md">docs/SERVICE_COMPLIANCE.md</a>, and <a href="https://github.com/w1ne/udslib/tree/develop/examples/dtc_full_coverage" data-example="dtc_full_coverage">dtc_full_coverage</a> shows both paths.</p></div></details>
+<details id="ota-flow"><summary>How do I do an OTA update or flash an ECU over UDS?</summary><div class="answer"><p><a href="https://github.com/w1ne/udslib/tree/develop/examples/pro_flash_tool" data-example="pro_flash_tool">pro_flash_tool</a> walks a 17-step sequence (sessions, DTC off, communication off, security, fingerprint, erase, download, check, reset, restore) with the exact bytes. <a href="https://github.com/w1ne/udslib/tree/develop/examples/h563_uds_bootloader" data-example="h563_uds_bootloader">h563_uds_bootloader</a> is a dual-bank STM32H563 bootloader with rollback, and <a href="https://github.com/w1ne/udslib/tree/develop/examples/f103_cubemx_uds_ecu" data-example="f103_cubemx_uds_ecu">f103_cubemx_uds_ecu</a> programs real flash on an STM32F103. Your OEM&rsquo;s required sequence may differ. Adapting it is integration work.</p></div></details>
+<details id="porting"><summary>How do I port it to a new MCU or CAN driver?</summary><div class="answer"><p>Provide a millisecond time source, TX and RX buffers, and a transport send function in <code>uds_config_t</code>. Feed each complete message to <code>uds_input_sdu()</code> and call <code>uds_process()</code> periodically. If you have no OS ISO-TP stack, use the built-in one: feed raw CAN frames to <code>uds_isotp_rx_callback()</code> and drive timing with <code>uds_tp_isotp_process()</code>. See <a href="https://github.com/w1ne/udslib/blob/develop/docs/INTEGRATION_GUIDE.md">docs/INTEGRATION_GUIDE.md</a> and <a href="https://github.com/w1ne/udslib/blob/develop/docs/TRANSPORT.md">docs/TRANSPORT.md</a>. The bare_metal and f103_cubemx_uds_ecu examples show it end to end.</p></div></details>
+<details id="ram-rom"><summary>How much RAM and ROM does it need?</summary><div class="answer"><p>We do not publish size figures here. RAM is whatever buffers you give it: the TX and RX buffers, and one context per ISO-TP channel. The numbers depend on your compiler, options and the services you enable, so build the example closest to your target and read the map file.</p></div></details>
+<details id="malloc"><summary>Does it use malloc?</summary><div class="answer"><p>No. The stack uses no heap. The application provides every buffer and context, including the DTC store array and the ISO-TP channel contexts.</p></div></details>
+<details id="misra"><summary>Is it MISRA compliant? Is it ISO 26262 certified?</summary><div class="answer"><p>MISRA-C:2012 is checked in CI with cppcheck&rsquo;s MISRA addon. There are no mandatory-rule violations, and the Required and Advisory deviations are documented with reasons in <a href="https://github.com/w1ne/udslib/blob/develop/docs/MISRA.md">docs/MISRA.md</a>. That is not a certification. We make no ISO 26262 claim and ship no safety case or tool qualification.</p></div></details>
+<details id="doip"><summary>Does it support DoIP?</summary><div class="answer"><p>Not today. The transport is ISO 15765-2 over CAN and CAN-FD. You can add a transport by providing your own send function and feeding complete messages to <code>uds_input_sdu()</code>, but we do not ship DoIP. See <a href="https://github.com/w1ne/udslib/blob/develop/docs/TRANSPORT.md">docs/TRANSPORT.md</a>.</p></div></details>
+<details id="odx-cdd-canoe"><summary>Does it work with ODX, CDD or CANoe?</summary><div class="answer"><p>There is a script, <code>odx_to_c.py</code>, that generates a DID table in C from an ODX file. The docs cover ODX only. CANoe and other tools talk to the ECU over the bus like any UDS tester, so an ECU running UDSLib behaves as a normal UDS server. We have not published a CANoe guide. See <a href="https://github.com/w1ne/udslib/blob/develop/docs/ODX_TOOLING.md">docs/ODX_TOOLING.md</a>.</p></div></details>
+<details id="thesis-free"><summary>Is my thesis or student project free?</summary><div class="answer"><p>Yes. Personal, research and educational use is covered by the PolyForm Noncommercial 1.0.0 license at no cost. If you are a student and get stuck, email us. Help for verified student and thesis projects is at the maintainer&rsquo;s discretion.</p></div></details>
+<details id="internal-tooling"><summary>Is internal tooling at a company commercial use?</summary><div class="answer"><p>Yes. Any use inside a for-profit company beyond evaluation needs the commercial license. Evaluating UDSLib at a company before you buy is allowed: noncommercial development, testing and prototyping, with no production deployment. See <a href="pricing.html">pricing</a>.</p></div></details>
+<details id="support"><summary>What does support cover?</summary><div class="answer"><p>The commercial license includes up to 40 hours of integration help, one year of updates, and email support with a 2-business-day response target. Renewal is 1,500 EUR per year and only covers updates and support, because the license itself is perpetual. Spec-conformance bug fixes are free for everyone: open an issue on <a href="https://github.com/w1ne/udslib/issues">GitHub</a>. Details on <a href="pricing.html">the pricing page</a>.</p></div></details>
+</div></section>
+</main>
+<footer class="site-footer">
+<div class="wrap">
+<ul>
+<li><a href="https://github.com/w1ne/udslib">GitHub</a></li>
+<li><a href="mailto:andrii@shylenko.com">andrii@shylenko.com</a></li>
+<li><a href="pricing.html">Pricing</a></li>
+<li><a href="mcp.html">UDS MCP server</a></li>
+<li><a href="https://iolinki.com">iolinki.com (IO-Link stack)</a></li>
+</ul>
+<p>&copy; Andrii Shylenko e.v.</p>
+</div>
+</footer>
+</body>
+</html>
