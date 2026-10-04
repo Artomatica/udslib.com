@@ -121,3 +121,13 @@ test("worker: GET / points to mcp page; CORS on responses", async () => {
   const p = await post({ jsonrpc: "2.0", id: 1, method: "ping" });
   assert.equal(p.headers.get("access-control-allow-origin"), "*");
 });
+
+test("tools/list: every tool has a title and all three ChatGPT safety hints", async () => {
+  const res = await handleRpc({ jsonrpc: "2.0", id: 9, method: "tools/list" });
+  for (const t of res.result.tools) {
+    assert.ok(t.title, `${t.name} title`);
+    assert.equal(t.annotations.readOnlyHint, true, t.name);
+    assert.equal(t.annotations.openWorldHint, false, t.name);
+    assert.equal(t.annotations.destructiveHint, false, t.name);
+  }
+});
