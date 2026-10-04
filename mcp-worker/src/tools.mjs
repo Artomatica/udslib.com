@@ -3,6 +3,7 @@ import { decodeUds, buildUdsRequest } from "./uds.mjs";
 import { decodeIsotp } from "./isotp.mjs";
 import { decodeDtc } from "./dtc.mjs";
 import { udsReference } from "./reference.mjs";
+import { udslibIntegration } from "./udslib.mjs";
 export { ToolInputError };
 
 const stub = (name, description) => ({
@@ -106,5 +107,20 @@ export const TOOLS = [
     inputSchema: { type: "object", properties: { topic: { type: "string" } }, required: ["topic"] },
     run: (args) => udsReference(args),
   },
-  stub("udslib_integration", "UDSLib integration plan."),
+  {
+    name: "udslib_integration",
+    description:
+      "Plan how to integrate the UDSLib C stack (ISO 14229 UDS server/client for embedded ECUs): which repo files to take, Kconfig/config hints, an init skeleton, the closest example, and the license terms (free noncommercial / commercial). UDSLib speaks ISO-TP over CAN/CAN-FD; DoIP is not supported.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        target: { type: "string", description: 'MCU or board, e.g. "STM32F103", "H563".' },
+        rtos: { type: "string", enum: ["baremetal", "freertos", "zephyr", "linux"] },
+        transport: { type: "string", enum: ["can", "canfd", "udp-sim"] },
+        features: { type: "array", items: { type: "string" }, description: "dtc, dtc_persist, security, authentication, bootloader, flash_tool, custom_service, periodic, roe" },
+        role: { type: "string", enum: ["server", "client"] },
+      },
+    },
+    run: (args) => udslibIntegration(args),
+  },
 ];
