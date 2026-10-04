@@ -20,14 +20,14 @@ export const TOOLS = [
   {
     name: "analyze_trace",
     description:
-      "Analyze a whole CAN trace of a UDS diagnostic or flash session and say what went wrong. Accepts candump logs, Vector ASC, PEAK TRC (1.x/2.x), SavvyCAN or python-can CSV, pasted as text or uploaded as a file. Reassembles ISO-TP, pairs requests with responses (including 0x78 responsePending), measures P2/P2*, follows sessions and security access, reconstructs RequestDownload/TransferData into an image with CRC32, extracts identification DIDs, and returns a root-cause finding with the frames that show it. Shows an interactive timeline.",
+      "Analyze a whole CAN trace of a UDS diagnostic or flash session and say what went wrong. Accepts candump logs, Vector ASC, PEAK TRC (1.x/2.x), SavvyCAN or python-can CSV pasted as text, and those plus Vector BLF, Wireshark pcap/pcapng (SocketCAN) and ASAM MF4 bus logging uploaded as a file. Reassembles ISO-TP, pairs requests with responses (including 0x78 responsePending), measures P2/P2*, follows sessions and security access, reconstructs RequestDownload/TransferData into an image with CRC32, extracts identification DIDs, and returns a root-cause finding with the frames that show it. Shows an interactive timeline.",
     inputSchema: {
       type: "object",
       properties: {
-        trace: { type: "string", description: "The trace text (candump, ASC, TRC or CSV). Use this or file." },
+        trace: { type: "string", description: "Trace text (candump, ASC, TRC or CSV). Use this or file." },
         file: {
           type: "object",
-          description: "An uploaded trace file.",
+          description: "An uploaded trace file: text formats above, or binary BLF, pcap, pcapng, MF4.",
           properties: { download_url: { type: "string" }, file_id: { type: "string" }, file_name: { type: "string" }, mime_type: { type: "string" } },
           required: ["download_url", "file_id"],
         },

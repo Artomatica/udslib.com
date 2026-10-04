@@ -46,8 +46,8 @@
 </div>
 <div class="wrap">
 <div id="viewer-drop" class="viewer-drop">
-<p><strong>Drop a trace file here</strong> or <label class="link-like">choose one<input type="file" id="viewer-file" accept=".log,.asc,.trc,.csv,.txt" hidden /></label></p>
-<p class="muted small">candump log, Vector ASC, PEAK TRC 1.x/2.x, SavvyCAN or python-can CSV. BLF, pcap and MF4: export as ASC first.</p>
+<p><strong>Drop a trace file here</strong> or <label class="link-like">choose one<input type="file" id="viewer-file" accept=".log,.asc,.trc,.csv,.txt,.blf,.mf4,.mdf,.pcap,.pcapng" hidden /></label></p>
+<p class="muted small">Vector BLF and ASC, PEAK TRC 1.x/2.x, ASAM MF4 bus logging, Wireshark pcap/pcapng (SocketCAN), candump log, SavvyCAN or python-can CSV.</p>
 <p>Or try an example: <button type="button" class="btn-link" data-example="viewer/examples/flash-fail.trc">failed flash (TRC)</button> · <button type="button" class="btn-link" data-example="viewer/examples/flash-ok.asc">good flash (ASC)</button></p>
 <details><summary>Paste a trace instead</summary>
 <textarea id="viewer-paste" rows="6" spellcheck="false" placeholder="(1696412345.000000) can0 7E0#0210030000000000"></textarea>
@@ -56,6 +56,7 @@
 </div>
 <p id="viewer-status" class="viewer-status" role="status"></p>
 <div id="viewer-output"></div>
+<p class="muted">Trace not read correctly, or a format missing? <a href="#" data-feedback="trace-format">Tell us</a>; it goes straight to the maintainer.</p>
 <section class="viewer-more">
 <h2>Use it from ChatGPT, Claude or Cursor</h2>
 <p>The same analysis runs as the <code>analyze_trace</code> tool on the free <a href="mcp.html">UDS Toolbox MCP server</a>. In ChatGPT the result opens as this viewer; ask follow-up questions about any request in plain language.</p>
@@ -69,6 +70,7 @@
 <li><a href="mailto:andrii@shylenko.com">andrii@shylenko.com</a></li>
 <li><a href="pricing.html">Pricing</a></li>
 <li><a href="mcp.html">UDS MCP server</a></li>
+<li><a href="#" data-feedback="">Feedback</a></li>
 <li><a href="privacy.html">Privacy</a></li>
 <li><a href="terms.html">Terms</a></li>
 <li><a href="https://iolinki.com">iolinki.com (IO-Link stack)</a></li>

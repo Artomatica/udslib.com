@@ -1,5 +1,6 @@
 // udslib.com/viewer.html: parse and analyze traces locally in the browser.
-import { parseTrace, binaryKind } from "../src/trace/parse.mjs";
+import { parseTrace } from "../src/trace/parse.mjs";
+import { parseBinaryTrace, binaryFormat } from "../src/trace/binary.mjs";
 import { analyzeTrace } from "../src/trace/analyze.mjs";
 import { renderAnalysis } from "./render.mjs";
 
@@ -8,11 +9,11 @@ const out = $("#viewer-output");
 const status = $("#viewer-status");
 const track = (name, params) => { try { window.gtag?.("event", name, params); } catch { /* analytics optional */ } };
 
-function show(text, name) {
+async function show(input, name) {
   status.textContent = "";
   let parsed;
   try {
-    parsed = parseTrace(text);
+    parsed = typeof input === "string" ? parseTrace(input) : await parseBinaryTrace(input);
   } catch (e) {
     status.textContent = e.message;
     out.innerHTML = "";
@@ -39,17 +40,13 @@ function show(text, name) {
 }
 
 async function openFile(file) {
-  if (file.size > 50 * 1024 * 1024) {
-    status.textContent = "This file is over 50 MB. Cut it to the diagnostic session you care about.";
+  if (file.size > 200 * 1024 * 1024) {
+    status.textContent = "This file is over 200 MB. Cut it to the diagnostic session you care about.";
     return;
   }
   const bytes = new Uint8Array(await file.arrayBuffer());
-  const kind = binaryKind(bytes);
-  if (kind) {
-    status.textContent = `${kind} files are not supported yet. Export the trace as Vector ASC, PEAK TRC, candump log or CSV.`;
-    return;
-  }
-  show(new TextDecoder().decode(bytes), file.name);
+  status.textContent = `Reading ${file.name}…`;
+  show(binaryFormat(bytes) ? bytes : new TextDecoder().decode(bytes), file.name);
 }
 
 const drop = $("#viewer-drop");

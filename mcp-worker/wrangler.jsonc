@@ -5,5 +5,7 @@
   "compatibility_date": "2026-10-02",
   "workers_dev": true,
   "preview_urls": false,
-  "routes": [{ "pattern": "mcp.udslib.com", "custom_domain": true }]
+  "routes": [{ "pattern": "mcp.udslib.com", "custom_domain": true }],
+  "send_email": [{ "name": "EMAIL", "allowed_sender_addresses": ["andrii@labwired.com"] }],
+  "kv_namespaces": [{ "binding": "FEEDBACK_KV", "id": "cfcaca40b1214cb8beef6cc0e89d783c" }]
 }

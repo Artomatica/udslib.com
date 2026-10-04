@@ -51,6 +51,7 @@
 <tbody>
 <tr><td>UDS Toolbox plugin / MCP server</td><td>Tool inputs you or your AI client send (hex bytes, CAN frames, DTC codes, topic words, target names). These are not personal data unless you type personal data into them; we ask you not to. Technical connection data (IP address, user agent, time) handled by our hosting provider. We do not receive your name, email, account details or chat history.</td></tr>
 <tr><td>Website udslib.com</td><td>Pages viewed, clicks on links and buttons, approximate location, device and browser type, and a pseudonymous Google Analytics cookie ID. Connection data (IP address) in hosting logs.</td></tr>
+<tr><td>Feedback form</td><td>Your message, the topic you pick, the page you sent it from and, only if you give it, your email address. A one-way hash of your IP address is kept for one hour to limit spam.</td></tr>
 <tr><td>Email to us</td><td>Your name, email address and whatever you write; for license orders, company and billing details.</td></tr>
 </tbody>
 </table></div>
@@ -60,13 +61,13 @@
 <li>Plugin inputs: only to compute the answer to that request.</li>
 <li>Connection data: to deliver the service and protect it against abuse.</li>
 <li>Website analytics: to see which pages and examples are useful and improve the site.</li>
-<li>Email: to answer you, and for license orders to issue the contract and invoice and meet accounting duties.</li>
+<li>Feedback and email: to answer you and improve the tools, and for license orders to issue the contract and invoice and meet accounting duties.</li>
 </ul>
 <p>We do not sell personal data, use it for advertising profiles, or use plugin inputs to train models.</p>
 
 <h2 id="recipients">Categories of recipients</h2>
 <ul>
-<li>Hosting and network provider: Cloudflare, Inc. runs the MCP server (Cloudflare Workers) and DNS (<a href="https://www.cloudflare.com/privacypolicy/">privacy policy</a>).</li>
+<li>Hosting and network provider: Cloudflare, Inc. runs the MCP server and the feedback form (Cloudflare Workers, Email Service) and DNS (<a href="https://www.cloudflare.com/privacypolicy/">privacy policy</a>).</li>
 <li>Website hosting: GitHub, Inc. (GitHub Pages) (<a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">privacy statement</a>).</li>
 <li>Web analytics: Google LLC (Google Analytics 4) (<a href="https://policies.google.com/privacy">privacy policy</a>).</li>
 <li>Email: our email provider, and our accountant for license invoices.</li>
@@ -79,7 +80,7 @@
 <li>Plugin tool inputs and outputs: not stored. They exist in memory only while the request is processed (normally under one second). We keep no request logs with inputs.</li>
 <li>Connection data at Cloudflare: kept by Cloudflare for its security and operations purposes, typically no more than 30 days; we see only aggregate request counts.</li>
 <li>Google Analytics: user-level event data is deleted after at most 14 months (the retention setting of our property); aggregate reports remain.</li>
-<li>Email: kept as long as needed to answer you, at most 2 years; license order records 8 years as Hungarian accounting law requires.</li>
+<li>Feedback messages and email: kept as long as needed to answer you, at most 2 years; the spam-limit IP hash expires after 1 hour; license order records 8 years as Hungarian accounting law requires.</li>
 </ul>
 
 <h2 id="controls">Your controls and rights</h2>
@@ -105,6 +106,7 @@
 <li><a href="mailto:andrii@shylenko.com">andrii@shylenko.com</a></li>
 <li><a href="pricing.html">Pricing</a></li>
 <li><a href="mcp.html">UDS MCP server</a></li>
+<li><a href="#" data-feedback="">Feedback</a></li>
 <li><a href="privacy.html">Privacy</a></li>
 <li><a href="terms.html">Terms</a></li>
 <li><a href="https://iolinki.com">iolinki.com (IO-Link stack)</a></li>

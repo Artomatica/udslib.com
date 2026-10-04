@@ -1,7 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { parseTrace, detectFormat, binaryKind } from "../src/trace/parse.mjs";
+import { parseTrace, detectFormat } from "../src/trace/parse.mjs";
+import { binaryFormat } from "../src/trace/binary.mjs";
 import { analyzeTrace, analysisText, crc32 } from "../src/trace/analyze.mjs";
 import { flashOk, flashFail, imageBytes, writers, VIN } from "./scenario.mjs";
 
@@ -90,11 +91,11 @@ test("ASC: base dec, extended ids, CAN FD lines and junk produce warnings, not e
   assert.equal(warnings.length, 1);
 });
 
-test("unknown text is rejected with the supported list; binary formats are named", () => {
+test("unknown text is rejected with the supported list; binary formats are recognised", () => {
   assert.throws(() => parseTrace("hello world\nfoo"), /Supported: candump/);
-  assert.equal(binaryKind(new TextEncoder().encode("LOGG\x90\x00")), "Vector BLF");
-  assert.equal(binaryKind(Uint8Array.from([0x0a, 0x0d, 0x0d, 0x0a, 0, 0])), "pcapng");
-  assert.equal(binaryKind(new TextEncoder().encode("(1.0) can0 7E0#00")), null);
+  assert.equal(binaryFormat(new TextEncoder().encode("LOGG\x90\x00")), "blf");
+  assert.equal(binaryFormat(Uint8Array.from([0x0a, 0x0d, 0x0d, 0x0a, 0, 0])), "pcapng");
+  assert.equal(binaryFormat(new TextEncoder().encode("(1.0) can0 7E0#00")), null);
 });
 
 test("interleaved ECUs are paired by id", () => {
@@ -142,4 +143,20 @@ test("an unanswered block that the tester repeats is reported as repeated, not a
   const f = a.findings.find((x) => x.code === "timeout");
   assert.equal(f.severity, "warning");
   assert.match(f.detail, /No response for 2\d\d ms; the tester then repeated the same request/);
+});
+
+test("background bus traffic does not create findings or fake requests", () => {
+  const base = flashFail();
+  const noise = [];
+  for (let t = 0; t < base[base.length - 1].t; t += 10) {
+    noise.push({ t: t + 0.5, id: 0x123, data: [0x11, 0x22, t & 0xff, 0, 0, 0, 0, 0] }); // looks like an ISO-TP first frame
+    noise.push({ t: t + 0.7, id: 0x2a0, data: [0x02, 0x10, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00] }); // looks like a UDS request
+    noise.push({ t: t + 0.9, id: 0x3c4, data: [0x21, 0x50, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00] }); // stray CF
+  }
+  const frames = [...base, ...noise].sort((a, b) => a.t - b.t).map((f, i) => ({ i, t: f.t, id: f.id, ext: false, data: f.data, fd: false }));
+  const a = analyzeTrace(frames);
+  assert.equal(a.rootCause.code, "wrongBlockSequenceCounter");
+  assert.deepEqual(a.summary.ecus, [{ tester: "7E0", ecu: "7E8" }]);
+  assert.ok(a.pairs.every((p) => p.testerId === "7E0"));
+  assert.ok(!a.findings.some((f) => /isotp/.test(f.code)), a.findings.map((f) => f.code).join(","));
 });
