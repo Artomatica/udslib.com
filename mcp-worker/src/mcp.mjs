@@ -1,5 +1,14 @@
 import { TOOLS, ToolInputError } from "./tools.mjs";
 
+const TITLES = {
+  decode_uds: "Decode UDS message",
+  build_uds_request: "Build UDS request",
+  decode_isotp: "Decode ISO-TP trace",
+  decode_dtc: "Decode DTC",
+  uds_reference: "UDS reference",
+  udslib_integration: "UDSLib integration plan",
+};
+
 const SUPPORTED = ["2025-06-18", "2025-03-26", "2024-11-05"];
 const INSTRUCTIONS =
   "General UDS (ISO 14229), ISO-TP (ISO 15765-2) and DTC helpers. Offline, no hardware. Built by UDSLib — https://udslib.com";
@@ -43,7 +52,14 @@ export async function handleRpc(message) {
       return ok(id, {});
     case "tools/list":
       return ok(id, {
-        tools: TOOLS.map(({ name, description, inputSchema }) => ({ name, description, inputSchema })),
+        tools: TOOLS.map(({ name, description, inputSchema }) => ({
+          name,
+          title: TITLES[name],
+          description,
+          inputSchema,
+          // Every tool is a pure function over static tables: no writes, no outside calls.
+          annotations: { readOnlyHint: true, openWorldHint: false, destructiveHint: false, idempotentHint: true },
+        })),
       });
     case "tools/call": {
       const r = await callTool(params);

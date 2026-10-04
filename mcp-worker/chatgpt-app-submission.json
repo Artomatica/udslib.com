@@ -1,0 +1,152 @@
+{
+  "$schema": "https://developers.openai.com/apps-sdk/schemas/chatgpt-app-submission.v1.json",
+  "schema_version": 1,
+  "app_info": {
+    "display_name": "UDS Toolbox",
+    "subtitle": "Decode car diagnostic messages",
+    "description": "UDS Toolbox helps automotive and embedded engineers work with UDS (ISO 14229) diagnostics. Paste raw bytes, a candump trace or a DTC and it explains them: service, sub-function, data identifiers, negative response codes and their usual causes, ISO-TP framing and timing errors, and DTC status bits. It can also build request bytes (for example a RequestDownload for a flash address) and answer reference questions about timing, sessions, security access and the reprogramming sequence. It works offline on the message text only: no account, no hardware, nothing stored. Made by the authors of the UDSLib embedded stack.",
+    "category": "DEVELOPER_TOOLS"
+  },
+  "tools": {
+    "decode_uds": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only computes and returns an answer from the input and built-in reference tables; it writes nothing and changes no state.",
+        "open_world_justification": "Runs entirely inside the server on static tables; it makes no outbound network calls and reaches no external system or vehicle.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform any irreversible action."
+      }
+    },
+    "build_uds_request": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only computes and returns an answer from the input and built-in reference tables; it writes nothing and changes no state.",
+        "open_world_justification": "Runs entirely inside the server on static tables; it makes no outbound network calls and reaches no external system or vehicle.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform any irreversible action."
+      }
+    },
+    "decode_isotp": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only computes and returns an answer from the input and built-in reference tables; it writes nothing and changes no state.",
+        "open_world_justification": "Runs entirely inside the server on static tables; it makes no outbound network calls and reaches no external system or vehicle.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform any irreversible action."
+      }
+    },
+    "decode_dtc": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only computes and returns an answer from the input and built-in reference tables; it writes nothing and changes no state.",
+        "open_world_justification": "Runs entirely inside the server on static tables; it makes no outbound network calls and reaches no external system or vehicle.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform any irreversible action."
+      }
+    },
+    "uds_reference": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only computes and returns an answer from the input and built-in reference tables; it writes nothing and changes no state.",
+        "open_world_justification": "Runs entirely inside the server on static tables; it makes no outbound network calls and reaches no external system or vehicle.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform any irreversible action."
+      }
+    },
+    "udslib_integration": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only computes and returns an answer from the input and built-in reference tables; it writes nothing and changes no state.",
+        "open_world_justification": "Runs entirely inside the server on static tables; it makes no outbound network calls and reaches no external system or vehicle.",
+        "destructive_justification": "Does not delete, overwrite, revoke access, or perform any irreversible action."
+      }
+    }
+  },
+  "test_cases": [
+    {
+      "description": "Explain a negative response from an ECU.",
+      "user_prompt": "My ECU answered 7F 34 78 to a RequestDownload. What does that mean?",
+      "file_attachment_urls": null,
+      "tools_triggered": "decode_uds",
+      "expected_output": "Explains it is a negative response to RequestDownload (0x34) with NRC 0x78 responsePending: not an error, the ECU needs more time, and the tester should wait using the extended P2* timeout.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Reassemble a multi-frame ISO-TP trace.",
+      "user_prompt": "Decode this CAN trace: 7E8 10 0B 62 F1 90 57 30 4C, 7E0 30 00 00, 7E8 21 31 32 33 34 35 36",
+      "file_attachment_urls": null,
+      "tools_triggered": "decode_isotp",
+      "expected_output": "Reassembles one 11-byte message on 0x7E8 (62 F1 90 57 30 4C 31 32 33 34 35), identifies the flow control frame, and decodes it as a positive ReadDataByIdentifier response for DID F190 (VIN).",
+      "expected_output_url": null
+    },
+    {
+      "description": "Build request bytes for flashing.",
+      "user_prompt": "Build the UDS RequestDownload for address 0x08000000, 64 KiB, no compression.",
+      "file_attachment_urls": null,
+      "tools_triggered": "build_uds_request",
+      "expected_output": "Returns 34 00 44 08 00 00 00 00 01 00 00 with a breakdown: dataFormatIdentifier 00, addressAndLengthFormatIdentifier 44, address 0x08000000, size 0x10000.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Decode a DTC and its status byte.",
+      "user_prompt": "What is DTC C0 73 00 with status 0x2F?",
+      "file_attachment_urls": null,
+      "tools_triggered": "decode_dtc",
+      "expected_output": "Returns U0073-00 (network domain) and lists the set status bits: testFailed, testFailedThisOperationCycle, pendingDTC, confirmedDTC, testFailedSinceLastClear.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Look up the standard reprogramming flow.",
+      "user_prompt": "What is the usual UDS sequence to reflash an ECU?",
+      "file_attachment_urls": null,
+      "tools_triggered": "uds_reference",
+      "expected_output": "Returns the 17-step sequence (extended session, DTC off, communication control, programming session, security access, fingerprint, erase, download, transfer, exit, check, reset, restore) and notes it is a common OEM pattern, not mandated by ISO 14229.",
+      "expected_output_url": null
+    }
+  ],
+  "negative_test_cases": [
+    {
+      "description": "Do not trigger for unrelated requests.",
+      "user_prompt": "What meetings do I have tomorrow?",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The app should not be invoked because the request is unrelated to vehicle or ECU diagnostics.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Do not trigger for general car repair advice.",
+      "user_prompt": "My car makes a grinding noise when braking, what should I do?",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The app should not be invoked; this is mechanical repair advice, not decoding diagnostic protocol messages.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Do not trigger for unrelated programming help.",
+      "user_prompt": "Write a Python function that sorts a list of dictionaries by date.",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "The app should not be invoked because the request has nothing to do with UDS, ISO-TP or DTCs.",
+      "expected_output_url": null
+    }
+  ]
+}
